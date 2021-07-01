@@ -26,7 +26,9 @@ class _ChargerCardState extends State<ChargerCard> {
       width: size.width,
       padding: EdgeInsets.all(size.width * 0.05),
       child: FlatButton(
-        onPressed: (){},
+        onPressed: (){
+          Navigator.pushNamed(context, '/booking', arguments: widget.charger);
+        },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

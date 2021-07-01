@@ -116,29 +116,36 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.03, size.width * 0.05, 0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.lightGreen,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10),
-                  ),
-                ),
-                width: size.width,
-                child: FlatButton(
-                  onPressed: (){},
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: size.height * 0.01),
-                  child: Text(
-                    'CONFIRM BOOKING',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+            Expanded(
+              child: Align(
+                alignment: FractionalOffset.bottomCenter,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(size.width * 0.05, 0, size.width * 0.05, size.height * 0.03),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.lightGreen,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10),
+                      ),
+                    ),
+                    width: size.width,
+                    child: FlatButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                      padding: EdgeInsets.symmetric(horizontal: 0, vertical: size.height * 0.01),
+                      child: Text(
+                        'CONFIRM BOOKING',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
