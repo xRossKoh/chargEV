@@ -25,19 +25,16 @@ class ChargerCategory extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-        appBar: WelcomeAppBar(),
+        appBar: WelcomeAppBar('John'), //pass in user's displayname here
         body: Column(
           children: [
             SearchBar(),
             GridView.builder(
               padding: EdgeInsets.fromLTRB(
-            size.width * 0.05, 0 , size.width * 0.05, 0),
+                  size.width * 0.05, 0, size.width * 0.05, 0),
               shrinkWrap: true,
-              gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 8
-                    ),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, crossAxisSpacing: 8),
               itemCount: chargerCategories.length,
               itemBuilder: (context, index) => ChargeCategoryCard(
                   displayImage: chargerCategories[index]['displayImage'],
@@ -52,18 +49,13 @@ class ChargerCategory extends StatelessWidget {
 //==============================================================//
 
 //App bar for this page
-class WelcomeAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const WelcomeAppBar({Key key}) : super(key: key);
+class WelcomeAppBar extends StatelessWidget implements PreferredSizeWidget {
+  WelcomeAppBar(this.userName);
 
-  @override
-  _WelcomeAppBarState createState() => _WelcomeAppBarState();
+  final String userName;
 
   @override
   Size get preferredSize => Size.fromHeight(120);
-}
-
-class _WelcomeAppBarState extends State<WelcomeAppBar> {
-  String userName;
 
   @override
   Widget build(BuildContext context) {
@@ -113,13 +105,17 @@ class ChargeCategoryCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       clipBehavior: Clip.hardEdge,
       child: InkWell(
-          onTap: () {},
+          onTap: () {}, //some kind of handler here
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                flex: 1,
-                  child: FittedBox(child: displayImage, fit: BoxFit.cover, clipBehavior: Clip.hardEdge,)),
+                  flex: 1,
+                  child: FittedBox(
+                    child: displayImage,
+                    fit: BoxFit.cover,
+                    clipBehavior: Clip.hardEdge,
+                  )),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 8, 0, 5),
                 child: Text(categoryName,
