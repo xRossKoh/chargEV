@@ -26,22 +26,24 @@ class ChargerCategory extends StatelessWidget {
 
     return Scaffold(
         appBar: WelcomeAppBar('John'), //pass in user's displayname here
-        body: Column(
-          children: [
-            SearchBar(),
-            GridView.builder(
-              padding: EdgeInsets.fromLTRB(
-                  size.width * 0.05, 0, size.width * 0.05, 0),
-              shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, crossAxisSpacing: 8),
-              itemCount: chargerCategories.length,
-              itemBuilder: (context, index) => ChargeCategoryCard(
-                  displayImage: chargerCategories[index]['displayImage'],
-                  categoryName: chargerCategories[index]['categoryName'],
-                  count: chargerCategories[index]['count']),
-            )
-          ],
+        body: SafeArea(
+          child: Column(
+            children: [
+              SearchBar(),
+              GridView.builder(
+                padding: EdgeInsets.fromLTRB(
+                    size.width * 0.05, 0, size.width * 0.05, 0),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, crossAxisSpacing: 8),
+                itemCount: chargerCategories.length,
+                itemBuilder: (context, index) => ChargeCategoryCard(
+                    displayImage: chargerCategories[index]['displayImage'],
+                    categoryName: chargerCategories[index]['categoryName'],
+                    count: chargerCategories[index]['count']),
+              )
+            ],
+          ),
         ));
   }
 }
@@ -105,7 +107,9 @@ class ChargeCategoryCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       clipBehavior: Clip.hardEdge,
       child: InkWell(
-          onTap: () {}, //some kind of handler here
+          onTap: () {
+            Navigator.pushNamed(context, '/charger_selection');
+          }, //some kind of handler here
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

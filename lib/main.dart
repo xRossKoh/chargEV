@@ -5,11 +5,11 @@ import 'package:charg_ev/screens/booking.dart';
 import 'package:charg_ev/screens/confirm_booking.dart';
 
 void main() => runApp(MaterialApp(
-  initialRoute: '/yay',
+  initialRoute: '/',
   routes: {
-    '/': (context) => ChargerSelection(),
+    '/': (context) => ChargerCategory(),
+    '/charger_selection': (context) => ChargerSelection(),
     '/booking': (context) => Booking(),
     '/confirm_booking': (context) => ConfirmBooking(),
-    '/yay': (context) => ChargerCategory(),
   },
 ));
