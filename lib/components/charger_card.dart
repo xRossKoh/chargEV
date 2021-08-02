@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:charg_ev/models/charger.dart';
-import 'package:flutter/services.dart';
 
 class ChargerCard extends StatefulWidget {
   const ChargerCard({

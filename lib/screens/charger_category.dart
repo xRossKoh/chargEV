@@ -1,11 +1,14 @@
 import 'package:charg_ev/components/searchbar.dart';
+import 'package:charg_ev/services/auth.dart';
 import 'package:flutter/material.dart';
 
 //==============================================================//
 
 ///screen
 class ChargerCategory extends StatelessWidget {
-  const ChargerCategory({Key key}) : super(key: key);
+  ChargerCategory({Key key}) : super(key: key);
+  
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,17 @@ class ChargerCategory extends StatelessWidget {
 
     return Scaffold(
         appBar: WelcomeAppBar('John'), //pass in user's displayname here
+        drawer: Drawer( //temporary implementation, so not much thought given here
+            child: ListView(
+          children: [
+            DrawerHeader(child: Text('Hello John', style: TextStyle(fontSize: 30))),
+            ListTile(
+              leading: Icon(Icons.input),
+              title: Text('Sign Out'),
+              onTap: _auth.signOut,
+            ),
+          ],
+        )),
         body: SafeArea(
           child: Column(
             children: [

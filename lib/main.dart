@@ -1,15 +1,22 @@
-import 'package:charg_ev/screens/charger_category.dart';
+import 'package:charg_ev/screens/wrapper.dart';
+import 'package:charg_ev/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:charg_ev/screens/charger_selection.dart';
-import 'package:charg_ev/screens/booking.dart';
-import 'package:charg_ev/screens/confirm_booking.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(MaterialApp(
-  initialRoute: '/',
-  routes: {
-    '/': (context) => ChargerCategory(),
-    '/charger_selection': (context) => ChargerSelection(),
-    '/booking': (context) => Booking(),
-    '/confirm_booking': (context) => ConfirmBooking(),
-  },
-));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  runApp(StreamProvider<User>.value(
+    value: AuthService().user,
+    initialData: null,
+    child: MaterialApp(
+      initialRoute: '/',
+      routes: {
+        '/': (context) => Wrapper()
+      },
+    ),
+  ));
+}
