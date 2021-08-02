@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "296406075247",
+    "project_id": "chargev-eec49",
+    "storage_bucket": "chargev-eec49.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296406075247:android:e68ec045fadabea074ca9a",
+        "android_client_info": {
+          "package_name": "com.xrosskoh.chargEV"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296406075247-4vu0fd5eleel1bpl34vceco2l17v009n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnO1UStMxccRKH-yG0BBLZPWL_PJuEKxs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296406075247-4vu0fd5eleel1bpl34vceco2l17v009n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
