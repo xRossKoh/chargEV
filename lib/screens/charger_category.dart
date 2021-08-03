@@ -27,10 +27,10 @@ class ChargerCategory extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-        appBar: WelcomeAppBar('John'), //pass in user's displayname here
         body: SafeArea(
           child: Column(
             children: [
+              WelcomeAppBar('John'),
               SearchBar(),
               GridView.builder(
                 padding: EdgeInsets.fromLTRB(
