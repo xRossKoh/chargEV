@@ -1,13 +1,14 @@
 import 'package:charg_ev/components/searchbar.dart';
+import 'package:charg_ev/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:charg_ev/components/charge_category_card.dart';
-import 'package:charg_ev/components/welcome_appbar.dart';
 
 //==============================================================//
 
 ///screen
 class ChargerCategory extends StatelessWidget {
-  const ChargerCategory({Key key}) : super(key: key);
+  ChargerCategory({Key key}) : super(key: key);
+  
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +28,21 @@ class ChargerCategory extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+        appBar: WelcomeAppBar('John'), //pass in user's displayname here
+        drawer: Drawer( //temporary implementation, so not much thought given here
+            child: ListView(
+          children: [
+            DrawerHeader(child: Text('Hello John', style: TextStyle(fontSize: 30))),
+            ListTile(
+              leading: Icon(Icons.input),
+              title: Text('Sign Out'),
+              onTap: _auth.signOut,
+            ),
+          ],
+        )),
         body: SafeArea(
           child: Column(
             children: [
-              WelcomeAppBar('John'),
               SearchBar(),
               GridView.builder(
                 padding: EdgeInsets.fromLTRB(
@@ -47,5 +59,93 @@ class ChargerCategory extends StatelessWidget {
             ],
           ),
         ));
+  }
+}
+
+//==============================================================//
+
+//App bar for this page
+class WelcomeAppBar extends StatelessWidget implements PreferredSizeWidget {
+  WelcomeAppBar(this.userName);
+
+  final String userName;
+
+  @override
+  Size get preferredSize => Size.fromHeight(120);
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    return Container(
+        padding: EdgeInsets.fromLTRB(
+            size.width * 0.05, 25 + size.height * 0.03, size.width * 0.05, 0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            BackButton(),
+            Text(
+              'Hello, $userName',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            )
+          ],
+        ));
+  }
+}
+
+//==============================================================//
+
+///The items that are to be displayed in a grid
+class ChargeCategoryCard extends StatelessWidget {
+  const ChargeCategoryCard(
+      {Key key,
+
+      //maybe make a new class to encapsulate this info
+      @required this.displayImage,
+      @required this.categoryName,
+      @required this.count})
+      : super(key: key);
+
+  final Image displayImage;
+  final String categoryName;
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      clipBehavior: Clip.hardEdge,
+      child: InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, '/charger_selection');
+          }, //some kind of handler here
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                  flex: 1,
+                  child: FittedBox(
+                    child: displayImage,
+                    fit: BoxFit.cover,
+                    clipBehavior: Clip.hardEdge,
+                  )),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 8, 0, 5),
+                child: Text(categoryName,
+                    style:
+                        TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
+                child: Text(' (${count.toString()}) '),
+              )
+            ],
+          )),
+    );
   }
 }
