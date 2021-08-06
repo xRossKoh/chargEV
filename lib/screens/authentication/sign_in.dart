@@ -22,6 +22,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(title: Text('Sign in'), actions: <Widget>[
           TextButton.icon(
               onPressed: () {
@@ -38,7 +39,6 @@ class _SignInState extends State<SignIn> {
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
                   child: businessLogo,
                 ),
-                
                 Form(
                   key: _formKey,
                   child: Column(
@@ -77,6 +77,7 @@ class _SignInState extends State<SignIn> {
                                       setState(() {
                                         error =
                                             'Could not sign in with those credentials';
+                                        isLoading = false;
                                       });
                                     }
                                   }
