@@ -23,6 +23,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('Register'),
           actions: [
@@ -73,13 +74,14 @@ class _RegisterState extends State<Register> {
                               : () async {
                                   if (_formKey.currentState.validate()) {
                                     setState(() => isLoading = true);
-                                    dynamic result =
-                                        await _auth.signInWithEmailAndPassword(
+                                    dynamic result = await _auth
+                                        .registerWithEmailAndPassword(
                                             email: email, password: password);
                                     setState(() => isLoading = false);
                                     if (result == null) {
                                       setState(() {
                                         error = 'Please supply a valid email';
+                                        isLoading = false;
                                       });
                                     }
                                   }
