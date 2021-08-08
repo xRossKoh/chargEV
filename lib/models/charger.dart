@@ -1,7 +1,8 @@
 // class for information on charging station
 
-class Charger{
-
+class Charger {
+  String uid; //owner
+  String nickname;
   String location;
   double rate;
   int available;
@@ -11,7 +12,17 @@ class Charger{
   DateTime datetime;
   int duration;
 
-  Charger({this.location, this.rate, this.available, this.total, this.wattage, this.type, this.datetime, this.duration});
+  Charger({
+    this.uid,
+    this.nickname = 'Charger name',
+    this.location,
+    this.rate,
+    this.available,
+    this.total,
+    this.wattage,
+    this.type,
+    this.datetime,
+    this.duration});
 
   // void setLocation (String val){
   //   this.location = val;
