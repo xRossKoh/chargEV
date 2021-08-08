@@ -40,6 +40,7 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [

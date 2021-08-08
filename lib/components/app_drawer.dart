@@ -31,6 +31,12 @@ class AppDrawer extends StatelessWidget {
           },
         ),
         ListTile(
+            leading: Icon(Icons.add_box),
+            title: Text('Setup new Charger'),
+            onTap: () {
+              Navigator.pushNamed(context, '/charger_setup');
+            }),
+        ListTile(
           leading: Icon(Icons.input),
           title: Text('Sign Out'),
           onTap: _auth.signOut,
