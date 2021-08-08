@@ -10,11 +10,13 @@ class WelcomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // query size of screen
     Size size = MediaQuery.of(context).size;
 
     return Container(
         padding: EdgeInsets.fromLTRB(
-            size.width * 0.05, 25 + size.height * 0.03, size.width * 0.05, 0),
+            size.width * 0.05, size.height * 0.03, size.width * 0.05, 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

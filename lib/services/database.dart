@@ -8,34 +8,35 @@ class DatabaseService {
   DatabaseService({this.uid});
 
   // collection reference for userInfo
-  final CollectionReference userCollection = FirebaseFirestore.instance.collection('UserInfo');
+  final CollectionReference userCollection = FirebaseFirestore.instance.collection('userInfo');
 
   // add charger booking
-  Future addChargerBooking (Charger charger, DateTime datetime) async {
-    return await userCollection.doc(uid).collection('chargerBooking').add({
+  Future addBooking (Charger charger) async {
+    return await userCollection.doc(this.uid).collection('booking').add({
       'location': charger.location,
       'rate': charger.rate,
       'available': charger.available,
       'total': charger.total,
       'wattage': charger.wattage,
       'type': charger.type,
-      'date': DateFormat('dd-MM-yyyy').format(datetime),
-      'time': DateFormat('kk:mm'),
+      'date': DateFormat('dd-MM-yyyy').format(charger.datetime),
+      'time': DateFormat('kk:mm').format(charger.datetime),
+      'duration': charger.duration,
     });
   }
 
-  // add charger
-  Future addCharger (Charger charger, DateTime datetime, int duration) async {
-    return await userCollection.doc(uid).collection('chargerLoaner').add({
+  // add charger for booking
+  Future addCharger (Charger charger) async {
+    return await userCollection.doc(this.uid).collection('charger').add({
       'location': charger.location,
       'rate': charger.rate,
       'available': charger.available,
       'total': charger.total,
       'wattage': charger.wattage,
       'type': charger.type,
-      'date': DateFormat('dd-MM-yyyy').format(datetime),
-      'time': DateFormat('kk:mm'),
-      'duration': duration,
+      'date': DateFormat('dd-MM-yyyy').format(charger.datetime),
+      'time': DateFormat('kk:mm').format(charger.datetime),
+      'duration': charger.duration,
     });
   }
 

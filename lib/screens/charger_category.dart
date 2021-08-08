@@ -27,6 +27,8 @@ class ChargerCategory extends StatelessWidget {
 
     Size size = MediaQuery.of(context).size;
 
+    //TODO bring WelcomeAppBar and Drawer under SafeArea
+
     return Scaffold(
         appBar: WelcomeAppBar('John'), //pass in user's displayname here
         drawer: Drawer( //temporary implementation, so not much thought given here
