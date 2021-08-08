@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 
-class WelcomeAppBar extends StatelessWidget implements PreferredSizeWidget {
+class WelcomeAppBar extends StatelessWidget {
   WelcomeAppBar(this.userName);
 
   final String userName;
-
-  @override
-  Size get preferredSize => Size.fromHeight(120);
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +11,12 @@ class WelcomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     return Container(
         padding: EdgeInsets.fromLTRB(
-            size.width * 0.05, 25 + size.height * 0.03, size.width * 0.05, 0),
+            size.width * 0.05, size.height * 0.03, size.width * 0.05, 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BackButton(),
+            if (ModalRoute.of(context).canPop) BackButton(),
             Text(
               'Hello, $userName',
               style: TextStyle(
