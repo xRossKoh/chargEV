@@ -48,13 +48,16 @@ class MyChargers extends StatelessWidget {
                         builder: (context, snapshot) {
                           List<Charger> chargers =
                               snapshot.hasData ? snapshot.data : [];
-            
+                              
+                          //print(snapshot.error);
                           return Expanded(
                             child: ListView.builder(
-                                itemCount: chargers.length, //testChargers.length,
+                                itemCount:
+                                    chargers.length, //testChargers.length,
                                 itemBuilder: (context, index) {
-                                  return MyChargerTile( //testChargers[index]);
-                                    charger: chargers[index]); 
+                                  return MyChargerTile(
+                                      //testChargers[index]);
+                                      charger: chargers[index]);
                                 }),
                           );
                         }),

@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:charg_ev/models/charger.dart';
 import 'package:intl/intl.dart';
 import 'package:charg_ev/services/database.dart';
+import 'package:provider/provider.dart';
 
 class SetUpConfirmation extends StatefulWidget {
   const SetUpConfirmation({Key key}) : super(key: key);
@@ -19,12 +21,14 @@ class _SetUpConfirmationState extends State<SetUpConfirmation> {
     Size size = MediaQuery.of(context).size;
 
     // setting up database service
-    DatabaseService _databaseService = new DatabaseService();
+    final User user = Provider.of<User>(context);
+    DatabaseService _databaseService = new DatabaseService(uid: user.uid);
 
     // fetching charger data from previous charger set up page
     Charger charger = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Column(
           children: [

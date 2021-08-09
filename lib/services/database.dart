@@ -28,8 +28,8 @@ class DatabaseService {
   }
 
   // add charger for booking
-  Future addCharger (Charger charger) async {
-    return await userCollection.doc(this.uid).collection('charger').add({
+  Future addCharger(Charger charger) async {
+    return await userCollection.doc(this.uid).collection('chargers').add({
       'location': charger.location,
       'rate': charger.rate,
       'available': charger.available,
@@ -52,7 +52,7 @@ class DatabaseService {
   Stream<List<Booking>> get bookingList {
     return userCollection
         .doc(uid)
-        .collection('bookings')
+        .collection('chargerBookings')
         .snapshots() //Stream<QuerySnapShot> => Stream<List<Docs>> => Stream<List<Booking>>
         .map((snapshot) => snapshotToBookingsList(snapshot));
   }
@@ -63,17 +63,17 @@ class DatabaseService {
         chargerId: doc.get('chargerId'),
         startTime: doc.get('startTime'),
         endTime: doc.get('endTime'),
-        user: uid));
+        user: uid)).toList();
   }
 
   List<Charger> snapshotToChargerList(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) => Charger(
-        location: doc.get('location'),
-        rate: doc.get('rate'),
-        type: doc.get('type'),
-        wattage: doc.get('wattage'),
-        total: doc.get('total'),
-        available: doc.get('available'),
-        uid: uid));
+          location: doc.get('location'),
+          rate: doc.get('rate'),
+          type: doc.get('type'),
+          wattage: doc.get('wattage'),
+          total: doc.get('total'),
+          available: doc.get('available'),
+        )).toList();
   }
 }
