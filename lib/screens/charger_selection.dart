@@ -22,14 +22,14 @@ class _ChargerSelectionState extends State<ChargerSelection> {
     TextEditingController messageEditingController = new TextEditingController();
 
     List<Charger> chargers = [
-      Charger(location: 'Greenfield Terrace', rate: 0.20, available: 2, total: 5, wattage: 10, type: 1),
-      Charger(location: 'Telok Kurau Lorong J', rate: 0.20, available: 2, total: 2, wattage: 7, type: 2),
-      Charger(location: 'Greenfield Lane', rate: 0.20, available: 3, total: 15, wattage: 10, type: 1),
-      Charger(location: '2 Frankel Avenue', rate: 0.20, available: 10, total: 15, wattage: 8, type: 2),
-      Charger(location: '256 East Coast Road', rate: 0.20, available: 3, total: 7, wattage: 7, type: 1),
-      Charger(location: '6 Simei Ave', rate: 0.20, available: 2, total: 2, wattage: 15, type: 2),
-      Charger(location: '36 Bedok Road', rate: 0.20, available: 6, total: 7, wattage: 8, type: 2),
-      Charger(location: '59 Pasir Ris Drive', rate: 0.20, available: 3, total: 7, wattage: 10, type: 1),
+      Charger(location: 'Greenfield Terrace', rate: 0.20, available: 2, total: 5, wattage: 10, type: 1, datetime: DateTime.now()),
+      Charger(location: 'Telok Kurau Lorong J', rate: 0.20, available: 2, total: 2, wattage: 7, type: 2, datetime: DateTime.now()),
+      Charger(location: 'Greenfield Lane', rate: 0.20, available: 3, total: 15, wattage: 10, type: 1, datetime: DateTime.now()),
+      Charger(location: '2 Frankel Avenue', rate: 0.20, available: 10, total: 15, wattage: 8, type: 2, datetime: DateTime.now()),
+      Charger(location: '256 East Coast Road', rate: 0.20, available: 3, total: 7, wattage: 7, type: 1, datetime: DateTime.now()),
+      Charger(location: '6 Simei Ave', rate: 0.20, available: 2, total: 2, wattage: 15, type: 2, datetime: DateTime.now()),
+      Charger(location: '36 Bedok Road', rate: 0.20, available: 6, total: 7, wattage: 8, type: 2, datetime: DateTime.now()),
+      Charger(location: '59 Pasir Ris Drive', rate: 0.20, available: 3, total: 7, wattage: 10, type: 1, datetime: DateTime.now()),
     ];
 
     return Scaffold(

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class DatetimeButton extends StatefulWidget {
   const DatetimeButton({
     Key key,
-    @required this.displayDate,
+    @required this.displayTime,
   }) : super(key: key);
 
-  final bool displayDate;
+  final String displayTime;
 
   @override
   _DatetimeButtonState createState() => _DatetimeButtonState();
@@ -47,27 +47,8 @@ class _DatetimeButtonState extends State<DatetimeButton> {
           });
         },
         padding: EdgeInsets.symmetric(horizontal: 0, vertical: size.height * 0.01),
-        child: widget.displayDate? Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Sat',
-              style: TextStyle(
-                fontSize: 15,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: size.height * 0.005,),
-            Text(
-              '26 Jun',
-              style: TextStyle(
-                fontSize: 15,
-                color: Colors.black,
-              ),
-            ),
-          ],
-        ): Text(
-          '11.15am',
+        child: Text(
+          '${widget.displayTime}',
           style: TextStyle(
             fontSize: 15,
             color: Colors.black,
