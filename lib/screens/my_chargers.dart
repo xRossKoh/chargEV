@@ -2,8 +2,8 @@ import 'package:charg_ev/components/app_drawer.dart';
 import 'package:charg_ev/components/my_charger_tile.dart';
 import 'package:charg_ev/components/welcome_appbar.dart';
 import 'package:charg_ev/models/charger.dart';
+import 'package:charg_ev/models/user_info.dart';
 import 'package:charg_ev/services/database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,14 +23,14 @@ class MyChargers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    final UserInfo user = Provider.of<UserInfo>(context);
 
     return Scaffold(
       drawer: AppDrawer(),
       body: SafeArea(
         child: Column(
           children: [
-            WelcomeAppBar(user.uid),
+            WelcomeAppBar(user),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 0),

@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:charg_ev/models/user_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:charg_ev/models/charger.dart';
@@ -21,7 +21,7 @@ class _SetUpConfirmationState extends State<SetUpConfirmation> {
     Size size = MediaQuery.of(context).size;
 
     // setting up database service
-    final User user = Provider.of<User>(context);
+    final UserInfo user = Provider.of<UserInfo>(context);
     DatabaseService _databaseService = new DatabaseService(uid: user.uid);
 
     // fetching charger data from previous charger set up page
