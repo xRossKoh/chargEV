@@ -30,6 +30,7 @@ class DatabaseService {
   // add charger for booking
   Future addCharger(Charger charger) async {
     return await userCollection.doc(this.uid).collection('chargers').add({
+      'nickname': charger.nickname,
       'location': charger.location,
       'rate': charger.rate,
       'available': charger.available,
@@ -93,6 +94,7 @@ class DatabaseService {
   List<Charger> snapshotToChargerList(QuerySnapshot snapshot) {
     return snapshot.docs
         .map((doc) => Charger(
+              nickname: doc.get('nickname') ?? 'My Charger',
               location: doc.get('location'),
               rate: doc.get('rate'),
               type: doc.get('type'),

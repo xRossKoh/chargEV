@@ -242,7 +242,7 @@ class _SetUpConfirmationState extends State<SetUpConfirmation> {
                     child: FlatButton(
                       onPressed: () async {
                         await _databaseService.addCharger(charger);
-                        Navigator.pop(context);
+                        Navigator.pop(context, true);
                       },
                       padding: EdgeInsets.symmetric(horizontal: 0, vertical: size.height * 0.01),
                       child: Text(

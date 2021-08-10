@@ -1,17 +1,21 @@
+import 'package:charg_ev/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:charg_ev/components/location_appbar.dart';
 import 'package:charg_ev/models/charger.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-class FieldValidators{
-  static String stringValidator(String val){
-    return val.isEmpty? 'This field cannot be empty': null;
+class FieldValidators {
+  static String stringValidator(String val) {
+    return val.isEmpty ? 'This field cannot be empty' : null;
   }
 
-  static String rateValidator(String val){
-    return val.isEmpty? 'This field cannot be empty'
-        : val.contains(',')? 'Please enter a valid decimal rate': null;
+  static String rateValidator(String val) {
+    return val.isEmpty
+        ? 'This field cannot be empty'
+        : val.contains(',')
+            ? 'Please enter a valid decimal rate'
+            : null;
   }
 }
 
@@ -23,7 +27,6 @@ class ChargerSetUp extends StatefulWidget {
 }
 
 class _ChargerSetUpState extends State<ChargerSetUp> {
-
   final _formKey = GlobalKey<FormState>();
 
   // // text editing controllers
@@ -32,10 +35,22 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
   TextEditingController wattageEditingController = new TextEditingController();
   TextEditingController typeEditingController = new TextEditingController();
   TextEditingController durationEditingController = new TextEditingController();
+  TextEditingController nicknameEditingController =
+      new TextEditingController(text: 'My Charger');
+
+  @override
+  void dispose() {
+    rateEditingController.dispose();
+    totalEditingController.dispose();
+    wattageEditingController.dispose();
+    typeEditingController.dispose();
+    durationEditingController.dispose();
+    nicknameEditingController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-
     // query size of screen
     Size size = MediaQuery.of(context).size;
 
@@ -44,7 +59,10 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
       body: SafeArea(
         child: Column(
           children: [
-            LocationAppBar(location: '5A Dunbar Walk', withCurrentLocation: false,),
+            LocationAppBar(
+              location: '5A Dunbar Walk',
+              withCurrentLocation: false,
+            ),
             Padding(
               padding: EdgeInsets.fromLTRB(
                   size.width * 0.05, size.height * 0.03, size.width * 0.05, 0),
@@ -53,11 +71,17 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                 child: Column(
                   children: [
                     TextFormField(
+                      controller: nicknameEditingController,
+                      decoration: textInputDecoration.copyWith(
+                          hintText: 'Give a name for this charger'),
+                      validator: (val) =>
+                          val.isEmpty ? 'Give a name for this charger' : null,
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    TextFormField(
                       controller: rateEditingController,
-                      decoration: InputDecoration(
-                        hintText: 'Rental rate',
-                        suffixText: 'SGD/kWh'
-                      ),
+                      decoration: textInputDecoration.copyWith(
+                          hintText: 'Rental rate', suffixText: 'SGD/kWh'),
                       validator: FieldValidators.rateValidator,
                       keyboardType: TextInputType.number,
                       // inputFormatters: [
@@ -70,7 +94,7 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                     SizedBox(height: size.height * 0.01),
                     TextFormField(
                       controller: totalEditingController,
-                      decoration: InputDecoration(
+                      decoration: textInputDecoration.copyWith(
                         hintText: 'Number of available chargers',
                       ),
                       validator: FieldValidators.stringValidator,
@@ -85,10 +109,8 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                     SizedBox(height: size.height * 0.01),
                     TextFormField(
                       controller: wattageEditingController,
-                      decoration: InputDecoration(
-                        hintText: 'Wattage',
-                        suffixText: 'kWh'
-                      ),
+                      decoration: textInputDecoration.copyWith(
+                          hintText: 'Wattage', suffixText: 'kWh'),
                       validator: FieldValidators.stringValidator,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
@@ -101,7 +123,7 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                     SizedBox(height: size.height * 0.01),
                     TextFormField(
                       controller: typeEditingController,
-                      decoration: InputDecoration(
+                      decoration: textInputDecoration.copyWith(
                         hintText: 'Charger type',
                       ),
                       validator: FieldValidators.stringValidator,
@@ -117,11 +139,10 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                     FlatButton.icon(
                       onPressed: () async {
                         final DateTime picked = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2030)
-                        );
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2030));
                         // if (picked != null) {
                         //   setState(() => newCharger.setDate(picked));
                         // }
@@ -139,10 +160,8 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                     SizedBox(height: size.height * 0.01),
                     TextFormField(
                       controller: durationEditingController,
-                      decoration: InputDecoration(
-                        hintText: 'Rental Duration',
-                        suffixText: 'hr(s)'
-                      ),
+                      decoration: textInputDecoration.copyWith(
+                          hintText: 'Rental Duration', suffixText: 'hr(s)'),
                       validator: FieldValidators.stringValidator,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
@@ -154,20 +173,28 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                     ),
                     SizedBox(height: size.height * 0.02),
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           // await _databaseService.addCharger(newCharger);
-                          Navigator.pushNamed(context, '/setup_confirmation',
+                          dynamic result = await Navigator.pushNamed(
+                              context, '/setup_confirmation',
                               arguments: Charger(
+                                nickname: nicknameEditingController.text,
                                 location: '5A Dunbar Walk',
                                 rate: double.parse(rateEditingController.text),
-                                available: int.parse(totalEditingController.text),
+                                available:
+                                    int.parse(totalEditingController.text),
                                 total: int.parse(totalEditingController.text),
-                                wattage: int.parse(wattageEditingController.text),
+                                wattage:
+                                    int.parse(wattageEditingController.text),
                                 type: int.parse(typeEditingController.text),
                                 datetime: DateTime.now(),
-                                duration: int.parse(durationEditingController.text),
+                                duration:
+                                    int.parse(durationEditingController.text),
                               ));
+                          if (result == true) {
+                            Navigator.pushReplacementNamed(context, '/my_chargers');
+                          } 
                         }
                       },
                       child: Text(
