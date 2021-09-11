@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:charg_ev/components/booking_appbar.dart';
 import 'package:charg_ev/models/charger.dart';
 import 'package:flutter/painting.dart';
+import 'package:charg_ev/services/database.dart';
 
 // TODO consult team on whether need the current location text for this page, can possibly use the same app bar as in booking
 

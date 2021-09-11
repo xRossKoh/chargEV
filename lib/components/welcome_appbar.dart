@@ -1,12 +1,14 @@
+import 'package:charg_ev/models/user_info.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeAppBar extends StatelessWidget {
-  WelcomeAppBar(this.userName);
+  WelcomeAppBar(this.user);
 
-  final String userName;
+  final UserInfo user;
 
   @override
   Widget build(BuildContext context) {
+    // query size of screen
     Size size = MediaQuery.of(context).size;
 
     return Container(
@@ -18,7 +20,7 @@ class WelcomeAppBar extends StatelessWidget {
           children: [
             if (ModalRoute.of(context).canPop) BackButton(),
             Text(
-              'Hello, $userName',
+              'Hello, ${user.displayName}',
               style: TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,

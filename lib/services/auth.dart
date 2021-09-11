@@ -1,10 +1,13 @@
+import 'package:charg_ev/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:charg_ev/models/user_info.dart' as model;
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Stream<User> get user {
-    return _auth.authStateChanges();
+  Stream<model.UserInfo> get user {
+    return _auth.authStateChanges().asyncMap(
+      (user) => user == null ? null : DatabaseService(uid: user.uid).userInfo);
   }
 
   //sign in anon
@@ -30,12 +33,18 @@ class AuthService {
   }
 
   // register w email & pw
-  Future registerWithEmailAndPassword({String email, String password}) async {
+  Future registerWithEmailAndPassword(
+      {String email, String password, String displayName}) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      return result.user;
+      model.UserInfo user = //model prefix is used to identify chargEV's UserInfo from firebase's UserInfo
+          model.UserInfo(uid: result.user.uid, displayName: displayName);
+
+      await DatabaseService().addUserInfo(user);
+
+      return user;
     } on FirebaseAuthException catch (e) {
       print('FirebaseAuthException: $e');
       return null;

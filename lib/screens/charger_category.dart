@@ -2,7 +2,7 @@ import 'package:charg_ev/components/app_drawer.dart';
 import 'package:charg_ev/components/charge_category_card.dart';
 import 'package:charg_ev/components/searchbar.dart';
 import 'package:charg_ev/components/welcome_appbar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:charg_ev/models/user_info.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,14 +26,14 @@ class ChargerCategory extends StatelessWidget {
 
     Size size = MediaQuery.of(context).size;
 
-    final User user = Provider.of<User>(context);
+    final UserInfo user = Provider.of<UserInfo>(context);
 
     return Scaffold(
         drawer: AppDrawer(),
         body: SafeArea(
           child: Column(
             children: [
-              WelcomeAppBar('${user.uid}'),
+              WelcomeAppBar(user),
               SearchBar(),
               GridView.builder(
                 padding: EdgeInsets.fromLTRB(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:charg_ev/components/booking_appbar.dart';
 import 'package:charg_ev/models/charger.dart';
 import 'package:charg_ev/components/datetime_button.dart';
+import 'package:intl/intl.dart';
 
 // TODO make dates and times dynamic
 
@@ -37,14 +38,12 @@ class _BookingState extends State<Booking> {
               ),
             ),
             SizedBox(height: size.height * 0.02,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                DatetimeButton(displayDate: true,),
-                DatetimeButton(displayDate: true,),
-                DatetimeButton(displayDate: true,),
-                DatetimeButton(displayDate: true,),
-              ],
+            Text(
+              '${DateFormat('EEEE, dd-MM-yyyy').format(charger.datetime)}',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold
+              ),
             ),
             SizedBox(height: size.height * 0.03,),
             Text(
@@ -62,30 +61,30 @@ class _BookingState extends State<Booking> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    DatetimeButton(displayDate: false,),
-                    DatetimeButton(displayDate: false,),
-                    DatetimeButton(displayDate: false,),
-                    DatetimeButton(displayDate: false,),
+                    DatetimeButton(displayTime: '11:00am',),
+                    DatetimeButton(displayTime: '11:15am',),
+                    DatetimeButton(displayTime: '11:30am',),
+                    DatetimeButton(displayTime: '11:45am',),
                   ],
                 ),
                 SizedBox(height: size.height * 0.02,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    DatetimeButton(displayDate: false,),
-                    DatetimeButton(displayDate: false,),
-                    DatetimeButton(displayDate: false,),
-                    DatetimeButton(displayDate: false,),
+                    DatetimeButton(displayTime: '12:00pm',),
+                    DatetimeButton(displayTime: '12:15pm',),
+                    DatetimeButton(displayTime: '12:30pm',),
+                    DatetimeButton(displayTime: '12:45pm',),
                   ],
                 ),
                 SizedBox(height: size.height * 0.02,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    DatetimeButton(displayDate: false,),
-                    DatetimeButton(displayDate: false,),
-                    DatetimeButton(displayDate: false,),
-                    DatetimeButton(displayDate: false,),
+                    DatetimeButton(displayTime: '1:00pm',),
+                    DatetimeButton(displayTime: '1:15pm',),
+                    DatetimeButton(displayTime: '1:30pm',),
+                    DatetimeButton(displayTime: '1:45pm',),
                   ],
                 ),
               ],
