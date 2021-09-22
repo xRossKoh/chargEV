@@ -25,7 +25,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BookingAppBar(charger: Charger(location: 'Greenfield Terrace', rate: 0.20, available: 2, total: 5, wattage: 10, type: 1),),
+            BookingAppBar(charger: Charger(location: 'Greenfield Terrace', rate: 0.20, wattage: 10, type: 1),),
             Padding(
               padding: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.03, size.width * 0.05, 0),
               child: Text(

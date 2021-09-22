@@ -84,7 +84,7 @@ class _BookingAppBarState extends State<BookingAppBar> {
                     ),
                     SizedBox(height: size.height * 0.01,),
                     Text(
-                      "${widget.charger.available} / ${widget.charger.total} chargers available (${widget.charger.wattage} kW)",
+                      "${widget.charger.wattage} kW",
                       style: TextStyle(
                         fontSize: 15,
                         color: Colors.black,

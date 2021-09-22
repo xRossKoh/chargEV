@@ -87,27 +87,27 @@ class _SetUpConfirmationState extends State<SetUpConfirmation> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Icon(
-                          Icons.electrical_services,
-                          size: 20,
-                        ),
-                        SizedBox(width: size.width * 0.02),
-                        Text(
-                          '${charger.total}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                        SizedBox(width: size.width * 0.02),
-                        Text(
-                          '|',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold
-                          ),
-                        ),
-                        SizedBox(width: size.width * 0.02),
+                        // Icon(
+                        //   Icons.electrical_services,
+                        //   size: 20,
+                        // ),
+                        // SizedBox(width: size.width * 0.02),
+                        // Text(
+                        //   '${charger.total}',
+                        //   style: TextStyle(
+                        //     fontWeight: FontWeight.bold,
+                        //     fontSize: 20,
+                        //   ),
+                        // ),
+                        // SizedBox(width: size.width * 0.02),
+                        // Text(
+                        //   '|',
+                        //   style: TextStyle(
+                        //     fontSize: 20,
+                        //     fontWeight: FontWeight.bold
+                        //   ),
+                        // ),
+                        // SizedBox(width: size.width * 0.02),
                         Text(
                           '${charger.wattage}',
                           style: TextStyle(

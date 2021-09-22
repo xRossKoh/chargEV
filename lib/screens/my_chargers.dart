@@ -1,5 +1,5 @@
 import 'package:charg_ev/components/app_drawer.dart';
-import 'package:charg_ev/components/my_charger_tile.dart';
+import 'package:charg_ev/components/charger_card.dart';
 import 'package:charg_ev/components/welcome_appbar.dart';
 import 'package:charg_ev/models/charger.dart';
 import 'package:charg_ev/models/user_info.dart';
@@ -55,7 +55,7 @@ class MyChargers extends StatelessWidget {
                                 itemCount:
                                     chargers.length, //testChargers.length,
                                 itemBuilder: (context, index) {
-                                  return MyChargerTile(
+                                  return ChargerCard(
                                       //testChargers[index]);
                                       charger: chargers[index]);
                                 }),

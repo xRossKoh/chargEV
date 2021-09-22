@@ -182,9 +182,9 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                                 nickname: nicknameEditingController.text,
                                 location: '5A Dunbar Walk',
                                 rate: double.parse(rateEditingController.text),
-                                available:
-                                    int.parse(totalEditingController.text),
-                                total: int.parse(totalEditingController.text),
+                                // available:
+                                //     int.parse(totalEditingController.text),
+                                // total: int.parse(totalEditingController.text),
                                 wattage:
                                     int.parse(wattageEditingController.text),
                                 type: int.parse(typeEditingController.text),

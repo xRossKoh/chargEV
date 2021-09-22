@@ -5,8 +5,8 @@ class Charger {
   String nickname;
   String location;
   double rate;
-  int available;
-  int total;
+  // int available;
+  // int total;
   int wattage;
   int type;
   DateTime datetime;
@@ -17,8 +17,8 @@ class Charger {
     this.nickname = 'Charger name',
     this.location,
     this.rate,
-    this.available,
-    this.total,
+    // this.available,
+    // this.total,
     this.wattage,
     this.type,
     this.datetime,

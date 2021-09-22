@@ -17,8 +17,8 @@ class DatabaseService {
     return await userCollection.doc(uid).collection('chargerBooking').add({
       'location': charger.location,
       'rate': charger.rate,
-      'available': charger.available,
-      'total': charger.total,
+      // 'available': charger.available,
+      // 'total': charger.total,
       'wattage': charger.wattage,
       'type': charger.type,
       'date': DateFormat('dd-MM-yyyy').format(charger.datetime),
@@ -33,8 +33,8 @@ class DatabaseService {
       'nickname': charger.nickname,
       'location': charger.location,
       'rate': charger.rate,
-      'available': charger.available,
-      'total': charger.total,
+      // 'available': charger.available,
+      // 'total': charger.total,
       'wattage': charger.wattage,
       'type': charger.type,
       'date': DateFormat('dd-MM-yyyy').format(charger.datetime),
@@ -99,8 +99,8 @@ class DatabaseService {
               rate: doc.get('rate'),
               type: doc.get('type'),
               wattage: doc.get('wattage'),
-              total: doc.get('total'),
-              available: doc.get('available'),
+              // total: doc.get('total'),
+              // available: doc.get('available'),
             ))
         .toList();
   }

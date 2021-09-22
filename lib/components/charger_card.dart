@@ -1,20 +1,16 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:charg_ev/models/charger.dart';
+import 'package:flutter/material.dart';
 
-class ChargerCard extends StatefulWidget {
+class ChargerCard extends StatelessWidget {
   const ChargerCard({
     Key key,
-    @required this.charger,
+    this.charger,
+    this.showNickname
   }) : super(key: key);
 
   final Charger charger;
+  final bool showNickname;
 
-  @override
-  _ChargerCardState createState() => _ChargerCardState();
-}
-
-class _ChargerCardState extends State<ChargerCard> {
   @override
   Widget build(BuildContext context) {
 
@@ -23,10 +19,10 @@ class _ChargerCardState extends State<ChargerCard> {
 
     return Container(
       width: size.width,
-      padding: EdgeInsets.all(size.width * 0.05),
+      padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
       child: FlatButton(
         onPressed: (){
-          Navigator.pushNamed(context, '/booking', arguments: widget.charger);
+          Navigator.pushNamed(context, '/booking', arguments: this.charger);
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -37,8 +33,16 @@ class _ChargerCardState extends State<ChargerCard> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  showNickname? Text(
+                    charger.nickname,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ): Container(),
                   Text(
-                    widget.charger.location,
+                    charger.location,
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.black,
@@ -50,7 +54,7 @@ class _ChargerCardState extends State<ChargerCard> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        "SGD ${widget.charger.rate.toStringAsPrecision(2)}",
+                        "SGD ${charger.rate.toStringAsPrecision(2)}",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -68,7 +72,7 @@ class _ChargerCardState extends State<ChargerCard> {
                     ],
                   ),
                   Text(
-                    "${widget.charger.available} / ${widget.charger.total} chargers available (${widget.charger.wattage} kW)",
+                    "${charger.wattage} kW",
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.black,
@@ -79,7 +83,7 @@ class _ChargerCardState extends State<ChargerCard> {
             ),
             Expanded(
               flex: 1,
-              child: widget.charger.type == 1? Image.asset('assets/Type 1.jpg',): Image.asset('assets/Type 2.jpg',),
+              child: charger.type == 1? Image.asset('assets/Type 1.jpg',): Image.asset('assets/Type 2.jpg',),
             ),
           ],
         ),
