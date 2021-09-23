@@ -91,21 +91,21 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                       //   setState(() => newCharger.setRate(double.parse(val)));
                       // },
                     ),
-                    SizedBox(height: size.height * 0.01),
-                    TextFormField(
-                      controller: totalEditingController,
-                      decoration: textInputDecoration.copyWith(
-                        hintText: 'Number of available chargers',
-                      ),
-                      validator: FieldValidators.stringValidator,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ],
-                      // onChanged: (String val){
-                      //   setState(() => newCharger.setTotal(int.parse(val)));
-                      // },
-                    ),
+                    // SizedBox(height: size.height * 0.01),
+                    // TextFormField(
+                    //   controller: totalEditingController,
+                    //   decoration: textInputDecoration.copyWith(
+                    //     hintText: 'Number of available chargers',
+                    //   ),
+                    //   validator: FieldValidators.stringValidator,
+                    //   keyboardType: TextInputType.number,
+                    //   inputFormatters: [
+                    //     WhitelistingTextInputFormatter.digitsOnly
+                    //   ],
+                    //   // onChanged: (String val){
+                    //   //   setState(() => newCharger.setTotal(int.parse(val)));
+                    //   // },
+                    // ),
                     SizedBox(height: size.height * 0.01),
                     TextFormField(
                       controller: wattageEditingController,
@@ -188,7 +188,7 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                                 wattage:
                                     int.parse(wattageEditingController.text),
                                 type: int.parse(typeEditingController.text),
-                                datetime: DateTime.now(),
+                                date: DateTime.now(),
                                 duration:
                                     int.parse(durationEditingController.text),
                               ));

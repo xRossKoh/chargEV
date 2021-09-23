@@ -204,7 +204,7 @@ class _SetUpConfirmationState extends State<SetUpConfirmation> {
                       child: Column(
                         children: [
                           Text(
-                            '${DateFormat('dd/MM/yyyy, kk:mm').format(charger.datetime)}',
+                            '${DateFormat('dd/MM/yyyy, kk:mm').format(charger.date)}',
                             style: TextStyle(
                               fontSize: 20,
                             ),

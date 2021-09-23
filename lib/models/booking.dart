@@ -1,23 +1,21 @@
 class Booking {
 
   String chargerId;
-  String chargerLocationName;
+  String ownerUserId;
   DateTime startTime;
   DateTime endTime;
-  String user;
-  double price;
   DateTime creationDate;
+  double price;
 
   Duration get duration {
     return endTime.difference(startTime);
   }
 
-  Booking(
-      {this.chargerId,
+  Booking({
+      this.chargerId,
+      this.ownerUserId,
       this.startTime,
       this.endTime,
-      this.user,
-      this.chargerLocationName,
-      this.price,
-      this.creationDate});
+      this.creationDate,
+      this.price});
 }

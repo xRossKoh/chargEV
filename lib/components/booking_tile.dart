@@ -21,7 +21,7 @@ class BookingTile extends StatelessWidget {
           ),
           ListTile(
             title: Text(
-              booking.chargerLocationName,
+              booking.chargerLocation,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             subtitle: Column(

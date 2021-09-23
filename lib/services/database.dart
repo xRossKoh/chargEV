@@ -8,48 +8,52 @@ class DatabaseService {
   final String uid;
   DatabaseService({this.uid});
 
-  // collection reference for userInfo
+  /// Collection reference for user info
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('userInfo');
 
-  // add charger booking
-  Future addChargerBooking(Charger charger, DateTime datetime) async {
-    return await userCollection.doc(uid).collection('chargerBooking').add({
-      'location': charger.location,
-      'rate': charger.rate,
-      // 'available': charger.available,
-      // 'total': charger.total,
-      'wattage': charger.wattage,
-      'type': charger.type,
-      'date': DateFormat('dd-MM-yyyy').format(charger.datetime),
-      'time': DateFormat('kk:mm').format(charger.datetime),
-      'duration': charger.duration,
-    });
-  }
+  /// Collection reference for all chargers
+  final CollectionReference chargerCollection =
+      FirebaseFirestore.instance.collection('chargers');
 
-  // add charger for booking
+  /// Adds user's new charger to database
   Future addCharger(Charger charger) async {
-    return await userCollection.doc(this.uid).collection('chargers').add({
+    charger.initializeTimeslots(); // initialize the bookedTimeslot list in
+    return await chargerCollection.add({
+      'uid': charger.uid,
       'nickname': charger.nickname,
       'location': charger.location,
       'rate': charger.rate,
-      // 'available': charger.available,
-      // 'total': charger.total,
       'wattage': charger.wattage,
       'type': charger.type,
-      'date': DateFormat('dd-MM-yyyy').format(charger.datetime),
-      'time': DateFormat('kk:mm').format(charger.datetime),
+      'date': charger.date,
+      'time': charger.startTime,
       'duration': charger.duration,
+      'timeslots': charger.timeslots
     });
   }
 
-  //add User info
+  /// Adds user's new booking to database
+  Future addBooking(Booking booking) async {
+    return await userCollection.doc(uid)
+        .collection('bookings').add({
+        'chargerId': booking.chargerId,
+        'startTime': booking.startTime,
+        'endTime': booking.endTime,
+        'ownerUserId': booking.ownerUserId,
+        'price': booking.price,
+        'creationDate': booking.creationDate
+    });
+  }
+
+  /// Adds display name of new user to database
   Future addUserInfo(UserInfo userInfo) async {
-    return await userCollection.doc(userInfo.uid).set({
+    return await userCollection.doc(uid).set({
       'displayName': userInfo.displayName,
     }, SetOptions(merge: true));
   }
 
+  /// Gets user's uid and display name from database
   Future<UserInfo> get userInfo async {
     String displayName = await userCollection
         .doc(uid)
@@ -62,45 +66,75 @@ class DatabaseService {
         : UserInfo(uid: uid, displayName: displayName);
   }
 
-  //get List of Chargers
-  Stream<List<Charger>> get chargerList {
-    return userCollection
-        .doc(uid)
-        .collection('chargers')
+  /// Gets list of all chargers from database
+  Stream<List<Charger>> get allChargersList {
+    return chargerCollection
         .snapshots()
-        .map((snapshot) => snapshotToChargerList(snapshot));
+        .map((snapshot) => snapshotToAllChargersList(snapshot));
   }
 
-  //get List of Bookings
-  Stream<List<Booking>> get bookingList {
+  /// Gets list of user's chargers from database
+  Stream<List<Charger>> get myChargersList {
+    return chargerCollection
+        .where('uid', isEqualTo: uid)
+        .snapshots()
+        .map((snapshot) => snapshotToMyChargersList(snapshot));
+  }
+
+  /// Gets list of user's bookings from database
+  Stream<List<Booking>> get myBookingsList {
     return userCollection
         .doc(uid)
-        .collection('chargerBookings')
+        .collection('bookings')
         .snapshots() //Stream<QuerySnapShot> => Stream<List<Docs>> => Stream<List<Booking>>
-        .map((snapshot) => snapshotToBookingsList(snapshot));
+        .map((snapshot) => snapshotToMyBookingsList(snapshot));
   }
 
-  //utility functions
-  List<Booking> snapshotToBookingsList(QuerySnapshot snapshot) {
+  /// Utility function to convert database snapshot to Booking instance
+  List<Booking> snapshotToMyBookingsList(QuerySnapshot snapshot) {
     return snapshot.docs
         .map((doc) => Booking(
             chargerId: doc.get('chargerId'),
+            ownerUserId: doc.get('ownerUserId'),
             startTime: doc.get('startTime'),
             endTime: doc.get('endTime'),
-            user: uid))
+            creationDate: doc.get('creationDate'),
+            price: doc.get('price')
+          ))
         .toList();
   }
 
-  List<Charger> snapshotToChargerList(QuerySnapshot snapshot) {
+  /// Utility function to convert database snapshot to Charger instance
+  List<Charger> snapshotToMyChargersList(QuerySnapshot snapshot) {
     return snapshot.docs
         .map((doc) => Charger(
+              uid: doc.get('uid'),
               nickname: doc.get('nickname') ?? 'My Charger',
               location: doc.get('location'),
               rate: doc.get('rate'),
               type: doc.get('type'),
               wattage: doc.get('wattage'),
-              // total: doc.get('total'),
-              // available: doc.get('available'),
+              date: doc.get('date'),
+              startTime: doc.get('startTime'),
+              duration: doc.get('duration'),
+              timeslots: doc.get('timeslots')
+            ))
+        .toList();
+  }
+
+  List<Charger> snapshotToAllChargersList(QuerySnapshot snapshot) {
+    return snapshot.docs
+        .map((doc) => Charger(
+              uid: doc.get('uid'),
+              nickname: doc.get('nickname') ?? 'My Charger',
+              location: doc.get('location'),
+              rate: doc.get('rate'),
+              type: doc.get('type'),
+              wattage: doc.get('wattage'),
+              date: doc.get('date'),
+              startTime: doc.get('startTime'),
+              duration: doc.get('duration'),
+              timeslots: doc.get('timeslots')
             ))
         .toList();
   }

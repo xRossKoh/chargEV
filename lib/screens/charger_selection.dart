@@ -22,14 +22,14 @@ class _ChargerSelectionState extends State<ChargerSelection> {
     TextEditingController messageEditingController = new TextEditingController();
 
     List<Charger> chargers = [
-      Charger(location: 'Greenfield Terrace', rate: 0.20, wattage: 10, type: 1, datetime: DateTime.now()),
-      Charger(location: 'Telok Kurau Lorong J', rate: 0.20, wattage: 7, type: 2, datetime: DateTime.now()),
-      Charger(location: 'Greenfield Lane', rate: 0.20, wattage: 10, type: 1, datetime: DateTime.now()),
-      Charger(location: '2 Frankel Avenue', rate: 0.20, wattage: 8, type: 2, datetime: DateTime.now()),
-      Charger(location: '256 East Coast Road', rate: 0.20, wattage: 7, type: 1, datetime: DateTime.now()),
-      Charger(location: '6 Simei Ave', rate: 0.20, wattage: 15, type: 2, datetime: DateTime.now()),
-      Charger(location: '36 Bedok Road', rate: 0.20, wattage: 8, type: 2, datetime: DateTime.now()),
-      Charger(location: '59 Pasir Ris Drive', rate: 0.20, wattage: 10, type: 1, datetime: DateTime.now()),
+      Charger(location: 'Greenfield Terrace', rate: 0.20, wattage: 10, type: 1, date: DateTime.now()),
+      Charger(location: 'Telok Kurau Lorong J', rate: 0.20, wattage: 7, type: 2, date: DateTime.now()),
+      Charger(location: 'Greenfield Lane', rate: 0.20, wattage: 10, type: 1, date: DateTime.now()),
+      Charger(location: '2 Frankel Avenue', rate: 0.20, wattage: 8, type: 2, date: DateTime.now()),
+      Charger(location: '256 East Coast Road', rate: 0.20, wattage: 7, type: 1, date: DateTime.now()),
+      Charger(location: '6 Simei Ave', rate: 0.20, wattage: 15, type: 2, date: DateTime.now()),
+      Charger(location: '36 Bedok Road', rate: 0.20, wattage: 8, type: 2, date: DateTime.now()),
+      Charger(location: '59 Pasir Ris Drive', rate: 0.20, wattage: 10, type: 1, date: DateTime.now()),
     ];
 
     return Scaffold(

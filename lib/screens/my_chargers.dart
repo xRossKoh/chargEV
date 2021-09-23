@@ -44,7 +44,7 @@ class MyChargers extends StatelessWidget {
                               fontSize: 20, fontWeight: FontWeight.w300)),
                     ),
                     StreamBuilder<List<Charger>>(
-                        stream: DatabaseService(uid: user.uid).chargerList,
+                        stream: DatabaseService(uid: user.uid).myChargersList,
                         builder: (context, snapshot) {
                           List<Charger> chargers =
                               snapshot.hasData ? snapshot.data : [];

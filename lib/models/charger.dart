@@ -1,5 +1,7 @@
 // class for information on charging station
 
+import 'package:flutter/material.dart';
+
 class Charger {
   String uid; //owner
   String nickname;
@@ -9,22 +11,32 @@ class Charger {
   // int total;
   int wattage;
   int type;
-  DateTime datetime;
+  DateTime date;
+  TimeOfDay startTime;
   int duration;
+  List<String> timeslots;
 
   Charger({
     this.uid,
-    this.nickname = 'Charger name',
+    this.nickname,
     this.location,
     this.rate,
-    // this.available,
-    // this.total,
     this.wattage,
     this.type,
-    this.datetime,
-    this.duration});
+    this.date,
+    this.startTime,
+    this.duration,
+    this.timeslots,
+  });
 
-  // void setLocation (String val){
+  void initializeTimeslots(){
+    this.timeslots = new List(duration);
+    for (int i = 0; i < duration; i++){
+      timeslots[i] = "";
+    }
+  }
+
+// void setLocation (String val){
   //   this.location = val;
   // }
   //

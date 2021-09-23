@@ -41,7 +41,7 @@ class MyBookings extends StatelessWidget {
                       child: Text('My Bookings', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300)),
                     ),
                     StreamBuilder<List<Booking>>(
-                        stream: DatabaseService(uid: user.uid).bookingList,
+                        stream: DatabaseService(uid: user.uid).myBookingsList,
                         builder: (context, snapshot) {
                           List<Booking> bookings =
                               snapshot.hasData ? snapshot.data : [];
