@@ -204,7 +204,14 @@ class _SetUpConfirmationState extends State<SetUpConfirmation> {
                       child: Column(
                         children: [
                           Text(
-                            '${DateFormat('dd/MM/yyyy, kk:mm').format(charger.date)}',
+                            '${DateFormat('EEEE, dd-MM-yyyy').format(charger.startDateTime)}',
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                          SizedBox(height: size.height * 0.01),
+                          Text(
+                            '${DateFormat('hh:mm a').format(charger.startDateTime)}',
                             style: TextStyle(
                               fontSize: 20,
                             ),
@@ -241,6 +248,7 @@ class _SetUpConfirmationState extends State<SetUpConfirmation> {
                     width: size.width,
                     child: FlatButton(
                       onPressed: () async {
+                        charger.ownerUid = user.uid;
                         await _databaseService.addCharger(charger);
                         Navigator.pop(context, true);
                       },

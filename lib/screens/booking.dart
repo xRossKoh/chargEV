@@ -39,7 +39,7 @@ class _BookingState extends State<Booking> {
             ),
             SizedBox(height: size.height * 0.02,),
             Text(
-              '${DateFormat('EEEE, dd-MM-yyyy').format(charger.date)}',
+              '${DateFormat('EEEE, dd-MM-yyyy').format(charger.startDateTime)}',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold

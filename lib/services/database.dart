@@ -20,14 +20,13 @@ class DatabaseService {
   Future addCharger(Charger charger) async {
     charger.initializeTimeslots(); // initialize the bookedTimeslot list in
     return await chargerCollection.add({
-      'uid': charger.uid,
+      'ownerUid': uid,
       'nickname': charger.nickname,
       'location': charger.location,
       'rate': charger.rate,
       'wattage': charger.wattage,
       'type': charger.type,
-      'date': charger.date,
-      'time': charger.startTime,
+      'startDateTime': charger.startDateTime,
       'duration': charger.duration,
       'timeslots': charger.timeslots
     });
@@ -40,7 +39,7 @@ class DatabaseService {
         'chargerId': booking.chargerId,
         'startTime': booking.startTime,
         'endTime': booking.endTime,
-        'ownerUserId': booking.ownerUserId,
+        'ownerUid': booking.ownerUid,
         'price': booking.price,
         'creationDate': booking.creationDate
     });
@@ -70,15 +69,15 @@ class DatabaseService {
   Stream<List<Charger>> get allChargersList {
     return chargerCollection
         .snapshots()
-        .map((snapshot) => snapshotToAllChargersList(snapshot));
+        .map((snapshot) => snapshotToChargersList(snapshot));
   }
 
   /// Gets list of user's chargers from database
   Stream<List<Charger>> get myChargersList {
     return chargerCollection
-        .where('uid', isEqualTo: uid)
+        .where('ownerUid', isEqualTo: uid)
         .snapshots()
-        .map((snapshot) => snapshotToMyChargersList(snapshot));
+        .map((snapshot) => snapshotToChargersList(snapshot));
   }
 
   /// Gets list of user's bookings from database
@@ -95,7 +94,7 @@ class DatabaseService {
     return snapshot.docs
         .map((doc) => Booking(
             chargerId: doc.get('chargerId'),
-            ownerUserId: doc.get('ownerUserId'),
+            ownerUid: doc.get('ownerUid'),
             startTime: doc.get('startTime'),
             endTime: doc.get('endTime'),
             creationDate: doc.get('creationDate'),
@@ -104,37 +103,18 @@ class DatabaseService {
         .toList();
   }
 
-  /// Utility function to convert database snapshot to Charger instance
-  List<Charger> snapshotToMyChargersList(QuerySnapshot snapshot) {
+  List<Charger> snapshotToChargersList(QuerySnapshot snapshot) {
     return snapshot.docs
         .map((doc) => Charger(
-              uid: doc.get('uid'),
+              ownerUid: doc.get('ownerUid'),
               nickname: doc.get('nickname') ?? 'My Charger',
               location: doc.get('location'),
               rate: doc.get('rate'),
               type: doc.get('type'),
               wattage: doc.get('wattage'),
-              date: doc.get('date'),
-              startTime: doc.get('startTime'),
+              startDateTime: DateTime.parse(doc.get("startDateTime").toDate().toString()),
               duration: doc.get('duration'),
-              timeslots: doc.get('timeslots')
-            ))
-        .toList();
-  }
-
-  List<Charger> snapshotToAllChargersList(QuerySnapshot snapshot) {
-    return snapshot.docs
-        .map((doc) => Charger(
-              uid: doc.get('uid'),
-              nickname: doc.get('nickname') ?? 'My Charger',
-              location: doc.get('location'),
-              rate: doc.get('rate'),
-              type: doc.get('type'),
-              wattage: doc.get('wattage'),
-              date: doc.get('date'),
-              startTime: doc.get('startTime'),
-              duration: doc.get('duration'),
-              timeslots: doc.get('timeslots')
+              // timeslots: List.from(doc.get('timeslots'))?? []
             ))
         .toList();
   }

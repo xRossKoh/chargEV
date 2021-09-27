@@ -1,7 +1,7 @@
 class Booking {
 
   String chargerId;
-  String ownerUserId;
+  String ownerUid;
   DateTime startTime;
   DateTime endTime;
   DateTime creationDate;
@@ -13,7 +13,7 @@ class Booking {
 
   Booking({
       this.chargerId,
-      this.ownerUserId,
+      this.ownerUid,
       this.startTime,
       this.endTime,
       this.creationDate,

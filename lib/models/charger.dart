@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 class Charger {
-  String uid; //owner
+  String ownerUid; //owner
   String nickname;
   String location;
   double rate;
@@ -11,20 +11,18 @@ class Charger {
   // int total;
   int wattage;
   int type;
-  DateTime date;
-  TimeOfDay startTime;
+  DateTime startDateTime;
   int duration;
   List<String> timeslots;
 
   Charger({
-    this.uid,
+    this.ownerUid,
     this.nickname,
     this.location,
     this.rate,
     this.wattage,
     this.type,
-    this.date,
-    this.startTime,
+    this.startDateTime,
     this.duration,
     this.timeslots,
   });

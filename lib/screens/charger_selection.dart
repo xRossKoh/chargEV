@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:charg_ev/components/location_appbar.dart';
 import 'package:charg_ev/components/charger_card.dart';
 import 'package:charg_ev/models/charger.dart';
+import 'package:charg_ev/models/user_info.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:charg_ev/services/database.dart';
+import 'package:provider/provider.dart';
 
 // TODO complete search function
 
@@ -19,18 +23,23 @@ class _ChargerSelectionState extends State<ChargerSelection> {
     // fetch dimensions of phone
     Size size = MediaQuery.of(context).size;
 
+    // setting up database service
+    final UserInfo user = Provider.of<UserInfo>(context);
+    DatabaseService _databaseService = new DatabaseService(uid: user.uid);
+
     TextEditingController messageEditingController = new TextEditingController();
 
-    List<Charger> chargers = [
-      Charger(location: 'Greenfield Terrace', rate: 0.20, wattage: 10, type: 1, date: DateTime.now()),
-      Charger(location: 'Telok Kurau Lorong J', rate: 0.20, wattage: 7, type: 2, date: DateTime.now()),
-      Charger(location: 'Greenfield Lane', rate: 0.20, wattage: 10, type: 1, date: DateTime.now()),
-      Charger(location: '2 Frankel Avenue', rate: 0.20, wattage: 8, type: 2, date: DateTime.now()),
-      Charger(location: '256 East Coast Road', rate: 0.20, wattage: 7, type: 1, date: DateTime.now()),
-      Charger(location: '6 Simei Ave', rate: 0.20, wattage: 15, type: 2, date: DateTime.now()),
-      Charger(location: '36 Bedok Road', rate: 0.20, wattage: 8, type: 2, date: DateTime.now()),
-      Charger(location: '59 Pasir Ris Drive', rate: 0.20, wattage: 10, type: 1, date: DateTime.now()),
-    ];
+    // List<Charger> chargers = [
+    //   Charger(location: 'Greenfield Terrace', rate: 0.20, wattage: 10, type: 1, startDateTime: DateTime.now()),
+    //   Charger(location: 'Telok Kurau Lorong J', rate: 0.20, wattage: 7, type: 2, startDateTime: DateTime.now()),
+    //   Charger(location: 'Greenfield Lane', rate: 0.20, wattage: 10, type: 1, startDateTime: DateTime.now()),
+    //   Charger(location: '2 Frankel Avenue', rate: 0.20, wattage: 8, type: 2, startDateTime: DateTime.now()),
+    //   Charger(location: '256 East Coast Road', rate: 0.20, wattage: 7, type: 1, startDateTime: DateTime.now()),
+    //   Charger(location: '6 Simei Ave', rate: 0.20, wattage: 15, type: 2, startDateTime: DateTime.now()),
+    //   Charger(location: '36 Bedok Road', rate: 0.20, wattage: 8, type: 2, startDateTime: DateTime.now()),
+    //   Charger(location: '59 Pasir Ris Drive', rate: 0.20, wattage: 10, type: 1, startDateTime: DateTime.now()),
+    // ];
+
 
     return Scaffold(
       body: SafeArea(
@@ -59,12 +68,24 @@ class _ChargerSelectionState extends State<ChargerSelection> {
             //   ),
             // ),
             Flexible(
-              child: ListView.builder(
-                itemCount: chargers.length,
-                itemBuilder: (context, index){
-                  return ChargerCard(charger: chargers[index],showNickname: false,);
+              child: StreamBuilder<List<Charger>>(
+                stream: _databaseService.allChargersList,
+                builder: (context, snapshot){
+                  List<Charger> chargers;
+
+                  if (snapshot.hasData){
+                    chargers = snapshot.data;
+                    print(chargers.length);
+                  }
+
+                  return ListView.builder(
+                      itemCount: chargers.length,
+                      itemBuilder: (context, index){
+                        return ChargerCard(charger: chargers[index], showNickname: false,);
+                      }
+                  );
                 }
-              ),
+              )
             ),
           ],
         ),

@@ -29,6 +29,9 @@ class ChargerSetUp extends StatefulWidget {
 class _ChargerSetUpState extends State<ChargerSetUp> {
   final _formKey = GlobalKey<FormState>();
 
+  DateTime selectedDate;
+  TimeOfDay selectedTime;
+
   // // text editing controllers
   TextEditingController rateEditingController = new TextEditingController();
   TextEditingController totalEditingController = new TextEditingController();
@@ -84,28 +87,7 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                           hintText: 'Rental rate', suffixText: 'SGD/kWh'),
                       validator: FieldValidators.rateValidator,
                       keyboardType: TextInputType.number,
-                      // inputFormatters: [
-                      //   WhitelistingTextInputFormatter.digitsOnly
-                      // ],
-                      // onChanged: (String val){
-                      //   setState(() => newCharger.setRate(double.parse(val)));
-                      // },
                     ),
-                    // SizedBox(height: size.height * 0.01),
-                    // TextFormField(
-                    //   controller: totalEditingController,
-                    //   decoration: textInputDecoration.copyWith(
-                    //     hintText: 'Number of available chargers',
-                    //   ),
-                    //   validator: FieldValidators.stringValidator,
-                    //   keyboardType: TextInputType.number,
-                    //   inputFormatters: [
-                    //     WhitelistingTextInputFormatter.digitsOnly
-                    //   ],
-                    //   // onChanged: (String val){
-                    //   //   setState(() => newCharger.setTotal(int.parse(val)));
-                    //   // },
-                    // ),
                     SizedBox(height: size.height * 0.01),
                     TextFormField(
                       controller: wattageEditingController,
@@ -143,15 +125,40 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                             initialDate: DateTime.now(),
                             firstDate: DateTime.now(),
                             lastDate: DateTime(2030));
-                        // if (picked != null) {
-                        //   setState(() => newCharger.setDate(picked));
-                        // }
+                        if (picked != null) {
+                          setState(() {
+                            selectedDate = picked;
+                          });
+                        }
                       },
                       icon: Icon(Icons.calendar_today),
                       label: Text(
-                        'Select Date',
-                        // newCharger.getDate() == null? 'Select date'
-                        //     : DateFormat('dd-MM-yyyy').format(newCharger.getDate()).toString(),
+                        selectedDate == null?
+                        'Select Date':
+                        DateFormat('dd-MM-yyyy').format(selectedDate),
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                      height: 50.0,
+                      minWidth: 200.0,
+                    ),
+                    SizedBox(height: size.height * 0.01),
+                    FlatButton.icon(
+                      onPressed: () async {
+                        final TimeOfDay picked = await showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now()
+                        );
+                        if (picked != null) {
+                          setState(() {
+                            selectedTime = picked;
+                          });
+                        }
+                      },
+                      icon: Icon(Icons.schedule),
+                      label: Text(
+                        selectedTime == null?
+                        'Select Time':
+                        selectedTime.toString(),
                         style: TextStyle(fontSize: 20.0),
                       ),
                       height: 50.0,
@@ -182,15 +189,16 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                                 nickname: nicknameEditingController.text,
                                 location: '5A Dunbar Walk',
                                 rate: double.parse(rateEditingController.text),
-                                // available:
-                                //     int.parse(totalEditingController.text),
-                                // total: int.parse(totalEditingController.text),
-                                wattage:
-                                    int.parse(wattageEditingController.text),
+                                wattage: int.parse(wattageEditingController.text),
                                 type: int.parse(typeEditingController.text),
-                                date: DateTime.now(),
-                                duration:
-                                    int.parse(durationEditingController.text),
+                                startDateTime: new DateTime(
+                                  selectedDate.year,
+                                  selectedDate.month,
+                                  selectedDate.day,
+                                  selectedTime.hour,
+                                  selectedTime.minute
+                                ),
+                                duration: int.parse(durationEditingController.text),
                               ));
                           if (result == true) {
                             Navigator.pushReplacementNamed(context, '/my_chargers');
