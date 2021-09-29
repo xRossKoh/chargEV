@@ -1,5 +1,6 @@
 import 'package:charg_ev/constants.dart';
 import 'package:charg_ev/screens/location_selector.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:charg_ev/components/location_appbar.dart';
 import 'package:charg_ev/models/charger.dart';
@@ -92,6 +93,8 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
     typeEditingController.dispose();
     durationEditingController.dispose();
     nicknameEditingController.dispose();
+    postalCodeController.dispose();
+    addressEditingController.dispose();
     super.dispose();
   }
 
@@ -184,132 +187,135 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                         validator: FieldValidators.rateValidator,
                         keyboardType: TextInputType.number,
                       ),
-                    SizedBox(height: size.height * 0.01),
-                    TextFormField(
-                      controller: wattageEditingController,
-                      decoration: textInputDecoration.copyWith(
-                          hintText: 'Wattage', suffixText: 'kWh'),
-                      validator: FieldValidators.stringValidator,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ],
-                      // onChanged: (String val){
-                      //   setState(() => newCharger.setType(int.parse(val)));
-                      // },
-                    ),
-                    SizedBox(height: size.height * 0.01),
-                    TextFormField(
-                      controller: typeEditingController,
-                      decoration: textInputDecoration.copyWith(
-                        hintText: 'Charger type',
+                      SizedBox(height: size.height * 0.01),
+                      TextFormField(
+                        controller: wattageEditingController,
+                        decoration: textInputDecoration.copyWith(
+                            hintText: 'Wattage', suffixText: 'kWh'),
+                        validator: FieldValidators.stringValidator,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          WhitelistingTextInputFormatter.digitsOnly
+                        ],
+                        // onChanged: (String val){
+                        //   setState(() => newCharger.setWattage(int.parse(val)));
+                        // },
                       ),
-                      validator: FieldValidators.stringValidator,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ],
-                      // onChanged: (String val){
-                      //   setState(() => newCharger.setType(int.parse(val)));
-                      // },
-                    ),
-                    SizedBox(height: size.height * 0.01),
-                    FlatButton.icon(
-                      onPressed: () async {
-                        final DateTime picked = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2030));
-                        if (picked != null) {
-                          setState(() {
-                            selectedDate = picked;
-                          });
-                        }
-                      },
-                      icon: Icon(Icons.calendar_today),
-                      label: Text(
-                        selectedDate == null?
-                        'Select Date':
-                        DateFormat('dd-MM-yyyy').format(selectedDate),
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                      height: 50.0,
-                      minWidth: 200.0,
-                    ),
-                    SizedBox(height: size.height * 0.01),
-                    FlatButton.icon(
-                      onPressed: () async {
-                        final TimeOfDay picked = await showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.now()
-                        );
-                        if (picked != null) {
-                          setState(() {
-                            selectedTime = picked;
-                          });
-                        }
-                      },
-                      icon: Icon(Icons.schedule),
-                      label: Text(
-                        selectedTime == null?
-                        'Select Time':
-                        selectedTime.toString(),
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                      height: 50.0,
-                      minWidth: 200.0,
-                    ),
-                    SizedBox(height: size.height * 0.01),
-                    TextFormField(
-                      controller: durationEditingController,
-                      decoration: textInputDecoration.copyWith(
-                          hintText: 'Rental Duration', suffixText: 'hr(s)'),
-                      validator: FieldValidators.stringValidator,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ],
-                      // onChanged: (String val){
-                      //   setState(() => newCharger.setDuration(int.parse(val)));
-                      // },
-                    ),
-                    SizedBox(height: size.height * 0.02),
-                    TextButton(
-                      onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          // await _databaseService.addCharger(newCharger);
-                          dynamic result = await Navigator.pushNamed(
-                              context, '/setup_confirmation',
-                              arguments: Charger(
-                                nickname: nicknameEditingController.text,
-                                location: '5A Dunbar Walk',
-                                rate: double.parse(rateEditingController.text),
-                                wattage: int.parse(wattageEditingController.text),
-                                type: int.parse(typeEditingController.text),
-                                startDateTime: new DateTime(
-                                  selectedDate.year,
-                                  selectedDate.month,
-                                  selectedDate.day,
-                                  selectedTime.hour,
-                                  selectedTime.minute
-                                ),
-                                duration: int.parse(durationEditingController.text),
-                              ));
-                          if (result == true) {
-                            Navigator.pushReplacementNamed(context, '/my_chargers');
-                          } 
-                        }
-                      },
-                      child: Text(
-                        'Confirm charger',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.blue,
+                      SizedBox(height: size.height * 0.01),
+                      TextFormField(
+                        controller: typeEditingController,
+                        decoration: textInputDecoration.copyWith(
+                          hintText: 'Charger type',
                         ),
+                        validator: FieldValidators.stringValidator,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          WhitelistingTextInputFormatter.digitsOnly
+                        ],
+                        // onChanged: (String val){
+                        //   setState(() => newCharger.setType(int.parse(val)));
+                        // },
                       ),
-                    )],
+                      SizedBox(height: size.height * 0.01),
+                      FlatButton.icon(
+                        onPressed: () async {
+                          final DateTime picked = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime.now(),
+                              lastDate: DateTime(2030));
+                          if (picked != null) {
+                            setState(() {
+                              selectedDate = picked;
+                            });
+                          }
+                        },
+                        icon: Icon(Icons.calendar_today),
+                        label: Text(
+                          selectedDate == null
+                              ? 'Select Date'
+                              : DateFormat('dd-MM-yyyy').format(selectedDate),
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                        height: 50.0,
+                        minWidth: 200.0,
+                      ),
+                      SizedBox(height: size.height * 0.01),
+                      FlatButton.icon(
+                        onPressed: () async {
+                          final TimeOfDay picked = await showTimePicker(
+                              context: context, initialTime: TimeOfDay.now());
+                          if (picked != null) {
+                            setState(() {
+                              selectedTime = picked;
+                            });
+                          }
+                        },
+                        icon: Icon(Icons.schedule),
+                        label: Text(
+                          selectedTime == null
+                              ? 'Select Time'
+                              : selectedTime.toString(),
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                        height: 50.0,
+                        minWidth: 200.0,
+                      ),
+                      SizedBox(height: size.height * 0.01),
+                      TextFormField(
+                        controller: durationEditingController,
+                        decoration: textInputDecoration.copyWith(
+                            hintText: 'Rental Duration', suffixText: 'hr(s)'),
+                        validator: FieldValidators.stringValidator,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          WhitelistingTextInputFormatter.digitsOnly
+                        ],
+                        // onChanged: (String val){
+                        //   setState(() => newCharger.setDuration(int.parse(val)));
+                        // },
+                      ),
+                      SizedBox(height: size.height * 0.02),
+                      TextButton(
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            // await _databaseService.addCharger(newCharger);
+                            dynamic result = await Navigator.pushNamed(
+                                context, '/setup_confirmation',
+                                arguments: Charger(
+                                  nickname: nicknameEditingController.text,
+                                  location: addressEditingController.text,
+                                  coordinates: Charger.latLngToGeoPoint(displayMapController.center),
+                                  rate: 
+                                      double.parse(rateEditingController.text),
+                                  wattage:
+                                      int.parse(wattageEditingController.text),
+                                  type: int.parse(typeEditingController.text),
+                                  startDateTime: new DateTime(
+                                      selectedDate.year,
+                                      selectedDate.month,
+                                      selectedDate.day,
+                                      selectedTime.hour,
+                                      selectedTime.minute),
+                                  duration:
+                                      int.parse(durationEditingController.text),
+                                ));
+                            if (result == true) {
+                              Navigator.pushReplacementNamed(
+                                  context, '/my_chargers');
+                            }
+                          }
+                        },
+                        child: Text(
+                          'Confirm charger',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),

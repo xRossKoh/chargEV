@@ -1,11 +1,15 @@
 // class for information on charging station
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
+
 
 class Charger {
   String ownerUid; //owner
   String nickname;
   String location;
+  GeoPoint coordinates;
   double rate;
   // int available;
   // int total;
@@ -19,6 +23,7 @@ class Charger {
     this.ownerUid,
     this.nickname,
     this.location,
+    this.coordinates,
     this.rate,
     this.wattage,
     this.type,
@@ -27,11 +32,15 @@ class Charger {
     this.timeslots,
   });
 
-  void initializeTimeslots(){
+  void initializeTimeslots() {
     this.timeslots = new List(duration);
-    for (int i = 0; i < duration; i++){
+    for (int i = 0; i < duration; i++) {
       timeslots[i] = "";
     }
+  }
+
+  static GeoPoint latLngToGeoPoint(LatLng coords) {
+    return new GeoPoint(coords.latitude, coords.longitude);
   }
 
 // void setLocation (String val){
