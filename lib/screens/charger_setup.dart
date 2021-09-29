@@ -1,8 +1,12 @@
 import 'package:charg_ev/constants.dart';
+import 'package:charg_ev/screens/location_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:charg_ev/components/location_appbar.dart';
 import 'package:charg_ev/models/charger.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 
 class FieldValidators {
@@ -16,6 +20,11 @@ class FieldValidators {
         : val.contains(',')
             ? 'Please enter a valid decimal rate'
             : null;
+  }
+
+  //TODO ensure postal codes are integers only
+  static String postalCodeValidator(String val) {
+    return val.length != 6 ? 'Please input a valid postal code' : null;
   }
 }
 
@@ -31,6 +40,8 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
 
   DateTime selectedDate;
   TimeOfDay selectedTime;
+  bool isAddressSet = false;
+  LatLng coords;
 
   // // text editing controllers
   TextEditingController rateEditingController = new TextEditingController();
@@ -40,6 +51,38 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
   TextEditingController durationEditingController = new TextEditingController();
   TextEditingController nicknameEditingController =
       new TextEditingController(text: 'My Charger');
+  TextEditingController postalCodeController = TextEditingController();
+  TextEditingController addressEditingController = TextEditingController();
+  MapController displayMapController = MapController();
+
+  @override
+  void initState() {
+    super.initState();
+    postalCodeController.addListener(() {
+      if (postalCodeController.text.length == 6 &&
+          addressEditingController.text.isEmpty) {
+        locationFromAddress(postalCodeController.text).then((data) {
+          setState(() {
+            coords = LatLng(data[0]?.latitude, data[0]?.longitude);
+          });
+          return placemarkFromCoordinates(
+              data[0]?.latitude, data[0]?.longitude);
+        }).then((placemarks) {
+          String street = placemarks[0].street;
+          addressEditingController.value = TextEditingValue(text: street);
+          setState(() {
+            isAddressSet = true;
+          });
+        }).catchError((error) {
+          print(error);
+          //TODO handle this error in validator
+          if (error is NoResultFoundException) {
+            postalCodeController.value = TextEditingValue.empty;
+          }
+        });
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -60,34 +103,87 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Column(
-          children: [
-            LocationAppBar(
-              location: '5A Dunbar Walk',
-              withCurrentLocation: false,
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                  size.width * 0.05, size.height * 0.03, size.width * 0.05, 0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: nicknameEditingController,
-                      decoration: textInputDecoration.copyWith(
-                          hintText: 'Give a name for this charger'),
-                      validator: (val) =>
-                          val.isEmpty ? 'Give a name for this charger' : null,
-                    ),
-                    SizedBox(height: size.height * 0.01),
-                    TextFormField(
-                      controller: rateEditingController,
-                      decoration: textInputDecoration.copyWith(
-                          hintText: 'Rental rate', suffixText: 'SGD/kWh'),
-                      validator: FieldValidators.rateValidator,
-                      keyboardType: TextInputType.number,
-                    ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              LocationAppBar(
+                location: 'Setup a New Charger',
+                withCurrentLocation: false,
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(size.width * 0.05,
+                    size.height * 0.03, size.width * 0.05, 0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: nicknameEditingController,
+                        decoration: textInputDecoration.copyWith(
+                            hintText: 'Give a name for this charger'),
+                        validator: (val) =>
+                            val.isEmpty ? 'Give a name for this charger' : null,
+                      ),
+                      SizedBox(height: size.height * 0.01),
+                      TextFormField(
+                          controller: postalCodeController,
+                          decoration: textInputDecoration.copyWith(
+                              hintText: 'Postal Code'),
+                          validator: FieldValidators.postalCodeValidator),
+                      if (isAddressSet) ...[
+                        SizedBox(height: size.height * 0.01),
+                        TextFormField(
+                          controller: addressEditingController,
+                          decoration:
+                              textInputDecoration.copyWith(hintText: 'Address'),
+                          //validator: FieldValidators.postalCodeValidator
+                        ),
+                        SizedBox(height: size.height * 0.01),
+                        Stack(
+                            alignment: AlignmentDirectional.center,
+                            children: [
+                              SizedBox(
+                                  height: 100,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  child: FlutterMap(
+                                    mapController: displayMapController,
+                                    options: MapOptions(
+                                        center: coords,
+                                        zoom: 16.5,
+                                        interactiveFlags: InteractiveFlag.none),
+                                    layers: [
+                                      new TileLayerOptions(
+                                          urlTemplate:
+                                              "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                          subdomains: ['a', 'b', 'c']),
+                                    ],
+                                  )),
+                              Icon(Icons.location_pin),
+                            ]),
+                        ElevatedButton(
+                          child: Text("Set Precise Location"),
+                          onPressed: () async {
+                            LatLng targetCoordinate = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LocationSelector(
+                                        initialCoords:
+                                            displayMapController.center)));
+                            targetCoordinate ??= coords;
+                            displayMapController.move(
+                                targetCoordinate, displayMapController.zoom);
+                          },
+                        )
+                      ],
+                      SizedBox(height: size.height * 0.01),
+                      TextFormField(
+                        controller: rateEditingController,
+                        decoration: textInputDecoration.copyWith(
+                            hintText: 'Rental rate', suffixText: 'SGD/kWh'),
+                        validator: FieldValidators.rateValidator,
+                        keyboardType: TextInputType.number,
+                      ),
                     SizedBox(height: size.height * 0.01),
                     TextFormField(
                       controller: wattageEditingController,
@@ -99,7 +195,7 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                         WhitelistingTextInputFormatter.digitsOnly
                       ],
                       // onChanged: (String val){
-                      //   setState(() => newCharger.setWattage(int.parse(val)));
+                      //   setState(() => newCharger.setType(int.parse(val)));
                       // },
                     ),
                     SizedBox(height: size.height * 0.01),
@@ -213,12 +309,12 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                           color: Colors.blue,
                         ),
                       ),
-                    ),
-                  ],
+                    )],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
