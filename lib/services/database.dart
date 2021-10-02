@@ -69,6 +69,7 @@ class DatabaseService {
   /// Gets list of all chargers from database
   Stream<List<Charger>> get allChargersList {
     return chargerCollection
+        .where("ownerUid", isNotEqualTo: uid)
         .snapshots()
         .map((snapshot) => snapshotToChargersList(snapshot));
   }

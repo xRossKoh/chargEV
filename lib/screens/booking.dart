@@ -3,6 +3,7 @@ import 'package:charg_ev/components/booking_appbar.dart';
 import 'package:charg_ev/models/charger.dart';
 import 'package:charg_ev/components/datetime_button.dart';
 import 'package:intl/intl.dart';
+import 'package:charg_ev/models/booking.dart' as model;
 
 // TODO make dates and times dynamic
 
@@ -106,8 +107,16 @@ class _BookingState extends State<Booking> {
                     ),
                     width: size.width,
                     child: FlatButton(
-                      onPressed: (){
-                        Navigator.pushReplacementNamed(context, '/confirm_booking');
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(
+                            context, '/confirm_booking',
+                            arguments: {
+                              'booking': model.Booking(
+                                  chargerId: charger.ownerUid,
+                                  creationDate: DateTime.now(),
+                                  price: charger.rate),
+                              'charger': charger
+                            });
                       },
                       padding: EdgeInsets.symmetric(horizontal: 0, vertical: size.height * 0.01),
                       child: Text(

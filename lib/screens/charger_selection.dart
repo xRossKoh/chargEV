@@ -70,13 +70,11 @@ class _ChargerSelectionState extends State<ChargerSelection> {
             Flexible(
               child: StreamBuilder<List<Charger>>(
                 stream: _databaseService.allChargersList,
-                builder: (context, snapshot){
-                  List<Charger> chargers;
+                    builder: (context, snapshot) {
+                      List<Charger> chargers =
+                          snapshot.hasData ? snapshot.data : [];
 
-                  if (snapshot.hasData){
-                    chargers = snapshot.data;
-                    print(chargers.length);
-                  }
+                      //print(snapshot.error)
 
                   return ListView.builder(
                       itemCount: chargers.length,

@@ -3,6 +3,9 @@ import 'package:charg_ev/components/booking_appbar.dart';
 import 'package:charg_ev/models/charger.dart';
 import 'package:flutter/painting.dart';
 import 'package:charg_ev/services/database.dart';
+import 'package:charg_ev/models/booking.dart';
+import 'package:charg_ev/models/user_info.dart';
+import 'package:provider/provider.dart';
 
 // TODO consult team on whether need the current location text for this page, can possibly use the same app bar as in booking
 
@@ -16,16 +19,27 @@ class ConfirmBooking extends StatefulWidget {
 class _ConfirmBookingState extends State<ConfirmBooking> {
   @override
   Widget build(BuildContext context) {
-
     // fetch dimensions of phone
     Size size = MediaQuery.of(context).size;
+
+    // fetching booking data from previous booking selection page. data is
+    // passed in as a Map<String, Object>, where the keys are "booking" and
+    // "charger" respectively.
+    final args =
+        ModalRoute.of(context).settings.arguments as Map<String, Object>;
+    Booking booking = args["booking"];
+    Charger charger = args["charger"];
+
+    // setting up database service
+    final UserInfo user = Provider.of<UserInfo>(context);
+    DatabaseService _databaseService = new DatabaseService(uid: user.uid);
 
     return Scaffold(
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            BookingAppBar(charger: Charger(location: 'Greenfield Terrace', rate: 0.20, wattage: 10, type: 1),),
+            BookingAppBar(charger: charger),
             Padding(
               padding: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.03, size.width * 0.05, 0),
               child: Text(
@@ -51,7 +65,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
             Padding(
               padding: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.02, size.width * 0.05, 0),
               child: Text(
-                'Tuesday, 16 June 2021',
+                'unknown',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.black,
@@ -59,7 +73,8 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.03, size.width * 0.05, 0),
+              padding: EdgeInsets.fromLTRB(
+                  size.width * 0.05, size.height * 0.03, size.width * 0.05, 0),
               child: Text(
                 'Time',
                 style: TextStyle(
@@ -134,7 +149,9 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                     ),
                     width: size.width,
                     child: FlatButton(
-                      onPressed: (){
+                      onPressed: () async {
+                        booking.ownerUid = user.uid;
+                        await _databaseService.addBooking(booking);
                         Navigator.pop(context);
                       },
                       padding: EdgeInsets.symmetric(horizontal: 0, vertical: size.height * 0.01),
