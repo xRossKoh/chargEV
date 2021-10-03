@@ -5,6 +5,7 @@ import 'package:flutter/painting.dart';
 import 'package:charg_ev/services/database.dart';
 import 'package:charg_ev/models/booking.dart';
 import 'package:charg_ev/models/user_info.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 // TODO consult team on whether need the current location text for this page, can possibly use the same app bar as in booking
@@ -65,7 +66,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
             Padding(
               padding: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.02, size.width * 0.05, 0),
               child: Text(
-                'unknown',
+                DateFormat('EEEE, dd-MM-yyyy').format(charger.startDateTime),
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.black,
@@ -87,7 +88,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
             Padding(
               padding: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.02, size.width * 0.05, 0),
               child: Text(
-                '5.15PM - 7.15PM',
+                "${DateFormat('HH:mm').format(booking.startTime)} - ${DateFormat('HH:mm').format(booking.endTime)}",
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.black,

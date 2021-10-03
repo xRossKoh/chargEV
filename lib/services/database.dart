@@ -117,7 +117,7 @@ class DatabaseService {
               wattage: doc.get('wattage'),
               startDateTime: DateTime.parse(doc.get("startDateTime").toDate().toString()),
               duration: doc.get('duration'),
-              // timeslots: List.from(doc.get('timeslots'))?? []
+              timeslots: doc.get('timeslots')?? []
             ))
         .toList();
   }

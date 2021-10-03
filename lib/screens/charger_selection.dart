@@ -74,7 +74,7 @@ class _ChargerSelectionState extends State<ChargerSelection> {
                       List<Charger> chargers =
                           snapshot.hasData ? snapshot.data : [];
 
-                      //print(snapshot.error)
+                      // print(snapshot.error);
 
                   return ListView.builder(
                       itemCount: chargers.length,

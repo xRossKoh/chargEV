@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-class DatetimeButton extends StatefulWidget {
-  const DatetimeButton({
+class TimeButton extends StatefulWidget {
+  const TimeButton({
     Key key,
     @required this.displayTime,
+    this.booked
   }) : super(key: key);
 
-  final String displayTime;
+  final DateTime displayTime;
+  final bool booked;
 
   @override
-  _DatetimeButtonState createState() => _DatetimeButtonState();
+  _TimeButtonState createState() => _TimeButtonState();
 }
 
-class _DatetimeButtonState extends State<DatetimeButton> {
+class _TimeButtonState extends State<TimeButton> {
 
   // bool to keep track of whether button has been selected
   bool selected = false;
@@ -24,8 +27,10 @@ class _DatetimeButtonState extends State<DatetimeButton> {
     Size size = MediaQuery.of(context).size;
 
     return Container(
+      margin: EdgeInsets.symmetric(vertical: size.height * 0.01, horizontal: size.width * 0.1),
+      // padding: ,
       decoration: BoxDecoration(
-        color: selected? Colors.lightGreenAccent: Colors.white,
+        color: widget.booked? Colors.red: (selected? Colors.lightGreenAccent: Colors.white),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(10),
           topRight: Radius.circular(10),
@@ -41,14 +46,15 @@ class _DatetimeButtonState extends State<DatetimeButton> {
         ],
       ),
       child: FlatButton(
-        onPressed: (){
+        onPressed: widget.booked? null: (){
           setState(() {
             selected = !selected;
           });
+
         },
         padding: EdgeInsets.symmetric(horizontal: 0, vertical: size.height * 0.01),
         child: Text(
-          '${widget.displayTime}',
+          DateFormat("HH:mm").format(widget.displayTime),
           style: TextStyle(
             fontSize: 15,
             color: Colors.black,
@@ -58,3 +64,4 @@ class _DatetimeButtonState extends State<DatetimeButton> {
     );
   }
 }
+

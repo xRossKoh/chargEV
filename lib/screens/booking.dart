@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:charg_ev/components/booking_appbar.dart';
 import 'package:charg_ev/models/charger.dart';
-import 'package:charg_ev/components/datetime_button.dart';
 import 'package:intl/intl.dart';
 import 'package:charg_ev/models/booking.dart' as model;
-
-// TODO make dates and times dynamic
 
 class Booking extends StatefulWidget {
   const Booking({Key key}) : super(key: key);
@@ -15,6 +12,27 @@ class Booking extends StatefulWidget {
 }
 
 class _BookingState extends State<Booking> {
+
+  static List generateDisplayTime (Charger charger){
+    List displayTimeDropdown = [];
+    
+    for (int i = 0; i < charger.duration; i++){
+      displayTimeDropdown.add(charger.startDateTime.add(Duration(hours: i)));
+    }
+
+    return displayTimeDropdown;
+  }
+
+  static List generateDisplayDuration (Charger charger){
+    List displayDurationDropdown = [];
+
+    for (int i = 1; i <= charger.duration; i++){
+      displayDurationDropdown.add(i.toString());
+    }
+
+    return displayDurationDropdown;
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -23,6 +41,9 @@ class _BookingState extends State<Booking> {
 
     // fetch arguments passed from charger selection screen
     Charger charger = ModalRoute.of(context).settings.arguments;
+
+    String selectedStartTime;
+    String selectedDuration;
 
     return Scaffold(
       body: SafeArea(
@@ -48,7 +69,7 @@ class _BookingState extends State<Booking> {
             ),
             SizedBox(height: size.height * 0.03,),
             Text(
-              'Time',
+              'Start Time',
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
@@ -56,39 +77,49 @@ class _BookingState extends State<Booking> {
               ),
             ),
             SizedBox(height: size.height * 0.02,),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    DatetimeButton(displayTime: '11:00am',),
-                    DatetimeButton(displayTime: '11:15am',),
-                    DatetimeButton(displayTime: '11:30am',),
-                    DatetimeButton(displayTime: '11:45am',),
-                  ],
-                ),
-                SizedBox(height: size.height * 0.02,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    DatetimeButton(displayTime: '12:00pm',),
-                    DatetimeButton(displayTime: '12:15pm',),
-                    DatetimeButton(displayTime: '12:30pm',),
-                    DatetimeButton(displayTime: '12:45pm',),
-                  ],
-                ),
-                SizedBox(height: size.height * 0.02,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    DatetimeButton(displayTime: '1:00pm',),
-                    DatetimeButton(displayTime: '1:15pm',),
-                    DatetimeButton(displayTime: '1:30pm',),
-                    DatetimeButton(displayTime: '1:45pm',),
-                  ],
-                ),
-              ],
+            DropdownButton(
+              hint: selectedStartTime == null?
+              Text("Select start time for booking"):
+              Text(selectedStartTime),
+              value: selectedStartTime,
+              items: generateDisplayTime(charger)
+                  .map((time) => new DropdownMenuItem(
+                  value: DateFormat("HH:mm").format(time),
+                  child: Text(DateFormat("HH:mm").format(time))
+              )).toList(),
+              onChanged: (selected){
+                // setState(() {
+                //   selectedStartTime = selected;
+                // });
+                selectedStartTime = selected;
+              },
+            ),
+            SizedBox(height: size.height * 0.03,),
+            Text(
+              'Duration',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(height: size.height * 0.02,),
+            DropdownButton(
+              hint: selectedDuration == null?
+              Text("Select duration of booking"):
+              Text(selectedDuration),
+              value: selectedDuration,
+              items: generateDisplayDuration(charger)
+                  .map((duration) => new DropdownMenuItem(
+                  value: duration,
+                  child: Text(duration)
+              )).toList(),
+              onChanged: (selected){
+                // setState(() {
+                //   selectedDuration = selected;
+                // });
+                selectedDuration = selected;
+              },
             ),
             Expanded(
               child: Align(
@@ -108,11 +139,17 @@ class _BookingState extends State<Booking> {
                     width: size.width,
                     child: FlatButton(
                       onPressed: () {
+                        String date = DateFormat('yyyy-MM-dd').format(charger.startDateTime);
+                        String dateAndTime = date + " " + selectedStartTime;
+                        DateTime startTime = DateTime.parse(dateAndTime);
+
                         Navigator.pushReplacementNamed(
                             context, '/confirm_booking',
                             arguments: {
                               'booking': model.Booking(
                                   chargerId: charger.ownerUid,
+                                  startTime: startTime,
+                                  endTime: startTime.add(Duration(hours: int.parse(selectedDuration))),
                                   creationDate: DateTime.now(),
                                   price: charger.rate),
                               'charger': charger

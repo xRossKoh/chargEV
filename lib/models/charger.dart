@@ -17,7 +17,7 @@ class Charger {
   int type;
   DateTime startDateTime;
   int duration;
-  List<String> timeslots;
+  List timeslots;
 
   Charger({
     this.ownerUid,
