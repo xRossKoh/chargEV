@@ -1,6 +1,5 @@
 import 'package:charg_ev/models/user_info.dart';
 import 'package:charg_ev/screens/authentication/authenticate.dart';
-import 'package:charg_ev/screens/booking.dart';
 import 'package:charg_ev/screens/charger_category.dart';
 import 'package:charg_ev/screens/charger_selection.dart';
 import 'package:charg_ev/screens/charger_setup.dart';
@@ -27,7 +26,6 @@ class Wrapper extends StatelessWidget {
             routes: {
               '/': (context) => ChargerCategory(),
               '/charger_selection': (context) => ChargerSelection(),
-              '/booking': (context) => Booking(),
               '/confirm_booking': (context) => ConfirmBooking(),
               '/my_bookings': (context) => MyBookings(),
               '/my_chargers': (context) => MyChargers(),

@@ -18,7 +18,6 @@ class DatabaseService {
 
   /// Adds user's new charger to database
   Future addCharger(Charger charger) async {
-    charger.initializeTimeslots(); // initialize the bookedTimeslot list in
     return await chargerCollection.add({
       'ownerUid': uid,
       'nickname': charger.nickname,
@@ -29,7 +28,6 @@ class DatabaseService {
       'type': charger.type,
       'startDateTime': charger.startDateTime,
       'duration': charger.duration,
-      'timeslots': charger.timeslots
     });
   }
 
@@ -40,7 +38,6 @@ class DatabaseService {
         'chargerId': booking.chargerId,
         'startTime': booking.startTime,
         'endTime': booking.endTime,
-        'ownerUid': booking.ownerUid,
         'price': booking.price,
         'creationDate': booking.creationDate
     });
@@ -96,7 +93,6 @@ class DatabaseService {
     return snapshot.docs
         .map((doc) => Booking(
             chargerId: doc.get('chargerId'),
-            ownerUid: doc.get('ownerUid'),
             startTime: doc.get('startTime'),
             endTime: doc.get('endTime'),
             creationDate: doc.get('creationDate'),
@@ -109,6 +105,7 @@ class DatabaseService {
     return snapshot.docs
         .map((doc) => Charger(
               ownerUid: doc.get('ownerUid'),
+              chargerId: doc.id,
               nickname: doc.get('nickname') ?? 'My Charger',
               location: doc.get('location'),
               coordinates: doc.get('coordinates'),
@@ -117,7 +114,6 @@ class DatabaseService {
               wattage: doc.get('wattage'),
               startDateTime: DateTime.parse(doc.get("startDateTime").toDate().toString()),
               duration: doc.get('duration'),
-              timeslots: doc.get('timeslots')?? []
             ))
         .toList();
   }

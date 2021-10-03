@@ -26,14 +26,22 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
     // fetching booking data from previous booking selection page. data is
     // passed in as a Map<String, Object>, where the keys are "booking" and
     // "charger" respectively.
-    final args =
-        ModalRoute.of(context).settings.arguments as Map<String, Object>;
-    Booking booking = args["booking"];
-    Charger charger = args["charger"];
+    final Charger charger = ModalRoute.of(context).settings.arguments;
 
     // setting up database service
     final UserInfo user = Provider.of<UserInfo>(context);
     DatabaseService _databaseService = new DatabaseService(uid: user.uid);
+
+    DateTime startTime = charger.startDateTime;
+    DateTime endTime = charger.startDateTime.add(Duration(hours: charger.duration));
+
+    Booking booking = new Booking(
+      chargerId: charger.chargerId,
+      startTime: startTime,
+      endTime: endTime,
+      creationDate: DateTime.now(),
+      price: 1
+    );
 
     return Scaffold(
       body: SafeArea(
@@ -88,7 +96,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
             Padding(
               padding: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.02, size.width * 0.05, 0),
               child: Text(
-                "${DateFormat('HH:mm').format(booking.startTime)} - ${DateFormat('HH:mm').format(booking.endTime)}",
+                "${DateFormat('HH:mm').format(startTime)} - ${DateFormat('HH:mm').format(endTime)}",
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.black,
@@ -122,7 +130,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                     ),
                     SizedBox(height: size.height * 0.02,),
                     Text(
-                      'SGD 5.07',
+                      'SGD 1.00',
                       style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -151,7 +159,6 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                     width: size.width,
                     child: FlatButton(
                       onPressed: () async {
-                        booking.ownerUid = user.uid;
                         await _databaseService.addBooking(booking);
                         Navigator.pop(context);
                       },

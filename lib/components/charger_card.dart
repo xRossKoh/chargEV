@@ -22,7 +22,7 @@ class ChargerCard extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(16, 8, 16, 16),
       child: FlatButton(
         onPressed: (){
-          Navigator.pushNamed(context, '/booking', arguments: this.charger);
+          Navigator.pushNamed(context, '/confirm_booking', arguments: this.charger);
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

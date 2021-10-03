@@ -1,6 +1,5 @@
 import 'package:charg_ev/components/app_drawer.dart';
 import 'package:charg_ev/components/charge_category_card.dart';
-import 'package:charg_ev/components/searchbar.dart';
 import 'package:charg_ev/components/welcome_appbar.dart';
 import 'package:charg_ev/models/user_info.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +33,6 @@ class ChargerCategory extends StatelessWidget {
           child: Column(
             children: [
               WelcomeAppBar(user),
-              SearchBar(),
               GridView.builder(
                 padding: EdgeInsets.fromLTRB(
                     size.width * 0.05, 0, size.width * 0.05, 0),

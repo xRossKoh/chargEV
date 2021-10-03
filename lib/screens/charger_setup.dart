@@ -27,6 +27,11 @@ class FieldValidators {
   static String postalCodeValidator(String val) {
     return val.length != 6 ? 'Please input a valid postal code' : null;
   }
+
+  static String durationValidator(String val){
+    int input = int.parse(val);
+    return (input < 1 || input > 3) ? 'Please input a duration between 1 and 3 hours': null;
+  }
 }
 
 class ChargerSetUp extends StatefulWidget {
@@ -266,7 +271,7 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                         controller: durationEditingController,
                         decoration: textInputDecoration.copyWith(
                             hintText: 'Rental Duration', suffixText: 'hr(s)'),
-                        validator: FieldValidators.stringValidator,
+                        validator: FieldValidators.durationValidator,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           WhitelistingTextInputFormatter.digitsOnly

@@ -7,6 +7,7 @@ import 'package:latlong2/latlong.dart';
 
 class Charger {
   String ownerUid; //owner
+  String chargerId;
   String nickname;
   String location;
   GeoPoint coordinates;
@@ -17,10 +18,10 @@ class Charger {
   int type;
   DateTime startDateTime;
   int duration;
-  List timeslots;
 
   Charger({
     this.ownerUid,
+    this.chargerId,
     this.nickname,
     this.location,
     this.coordinates,
@@ -29,15 +30,14 @@ class Charger {
     this.type,
     this.startDateTime,
     this.duration,
-    this.timeslots,
   });
 
-  void initializeTimeslots() {
-    this.timeslots = new List(duration);
-    for (int i = 0; i < duration; i++) {
-      timeslots[i] = "";
-    }
-  }
+  // void initializeTimeslots() {
+  //   this.timeslots = new List(duration);
+  //   for (int i = 0; i < duration; i++) {
+  //     timeslots[i] = "";
+  //   }
+  // }
 
   static GeoPoint latLngToGeoPoint(LatLng coords) {
     return new GeoPoint(coords.latitude, coords.longitude);
