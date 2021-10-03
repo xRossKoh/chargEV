@@ -2,11 +2,11 @@ import 'package:charg_ev/models/booking.dart';
 import 'package:charg_ev/models/user_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:charg_ev/models/charger.dart';
-import 'package:intl/intl.dart';
 
 class DatabaseService {
   final String uid;
-  DatabaseService({this.uid});
+  final String chargerId;
+  DatabaseService({this.uid, this.chargerId});
 
   /// Collection reference for user info
   final CollectionReference userCollection =
@@ -28,6 +28,15 @@ class DatabaseService {
       'type': charger.type,
       'startDateTime': charger.startDateTime,
       'duration': charger.duration,
+      'accepted': charger.accepted,
+      'acceptedUid': charger.acceptedUid
+    });
+  }
+
+  Future updateCharger(String uid) async{
+    return await chargerCollection.doc(chargerId).update({
+      "accepted": true,
+      "acceptedUid": uid
     });
   }
 
@@ -114,6 +123,8 @@ class DatabaseService {
               wattage: doc.get('wattage'),
               startDateTime: DateTime.parse(doc.get("startDateTime").toDate().toString()),
               duration: doc.get('duration'),
+              accepted: doc.get('accepted'),
+              acceptedUid: doc.get('acceptedUid')
             ))
         .toList();
   }

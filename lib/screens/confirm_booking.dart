@@ -160,6 +160,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
                     child: FlatButton(
                       onPressed: () async {
                         await _databaseService.addBooking(booking);
+                        await _databaseService.updateCharger(user.uid);
                         Navigator.pop(context);
                       },
                       padding: EdgeInsets.symmetric(horizontal: 0, vertical: size.height * 0.01),

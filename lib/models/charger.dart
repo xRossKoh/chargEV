@@ -18,6 +18,8 @@ class Charger {
   int type;
   DateTime startDateTime;
   int duration;
+  bool accepted;
+  String acceptedUid;
 
   Charger({
     this.ownerUid,
@@ -30,6 +32,8 @@ class Charger {
     this.type,
     this.startDateTime,
     this.duration,
+    this.accepted = false,
+    this.acceptedUid = ""
   });
 
   // void initializeTimeslots() {

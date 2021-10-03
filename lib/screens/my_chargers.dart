@@ -57,7 +57,7 @@ class MyChargers extends StatelessWidget {
                                 itemBuilder: (context, index) {
                                   return ChargerCard(
                                       //testChargers[index]);
-                                      charger: chargers[index], showNickname: false,);
+                                      charger: chargers[index], showNickname: true,);
                                 }),
                           );
                         }),
