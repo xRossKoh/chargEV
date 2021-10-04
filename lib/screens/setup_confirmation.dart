@@ -211,7 +211,7 @@ class _SetUpConfirmationState extends State<SetUpConfirmation> {
                           ),
                           SizedBox(height: size.height * 0.01),
                           Text(
-                            '${DateFormat('hh:mm a').format(charger.startDateTime)}',
+                            '${DateFormat('h:mm a').format(charger.startDateTime)}',
                             style: TextStyle(
                               fontSize: 20,
                             ),

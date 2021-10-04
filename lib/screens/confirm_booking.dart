@@ -30,7 +30,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
 
     // setting up database service
     final UserInfo user = Provider.of<UserInfo>(context);
-    DatabaseService _databaseService = new DatabaseService(uid: user.uid);
+    DatabaseService _databaseService = new DatabaseService(uid: user.uid, chargerId: charger.chargerId);
 
     DateTime startTime = charger.startDateTime;
     DateTime endTime = charger.startDateTime.add(Duration(hours: charger.duration));
@@ -96,7 +96,7 @@ class _ConfirmBookingState extends State<ConfirmBooking> {
             Padding(
               padding: EdgeInsets.fromLTRB(size.width * 0.05, size.height * 0.02, size.width * 0.05, 0),
               child: Text(
-                "${DateFormat('HH:mm').format(startTime)} - ${DateFormat('HH:mm').format(endTime)}",
+                "${DateFormat("h:mm a").format(startTime)} - ${DateFormat("h:mm a").format(endTime)}",
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.black,

@@ -102,9 +102,9 @@ class DatabaseService {
     return snapshot.docs
         .map((doc) => Booking(
             chargerId: doc.get('chargerId'),
-            startTime: doc.get('startTime'),
-            endTime: doc.get('endTime'),
-            creationDate: doc.get('creationDate'),
+            startTime: doc.get('startTime').toDate(),
+            endTime: doc.get('endTime').toDate(),
+            creationDate: doc.get('creationDate').toDate(),
             price: doc.get('price')
           ))
         .toList();
@@ -121,7 +121,7 @@ class DatabaseService {
               rate: doc.get('rate'),
               type: doc.get('type'),
               wattage: doc.get('wattage'),
-              startDateTime: DateTime.parse(doc.get("startDateTime").toDate().toString()),
+              startDateTime: doc.get('startDateTime').toDate(),
               duration: doc.get('duration'),
               accepted: doc.get('accepted'),
               acceptedUid: doc.get('acceptedUid')

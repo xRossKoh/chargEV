@@ -45,7 +45,10 @@ class _ChargerSelectionState extends State<ChargerSelection> {
                   return ListView.builder(
                       itemCount: chargers.length,
                       itemBuilder: (context, index){
+                        if (!chargers[index].accepted){
                           return ChargerCard(charger: chargers[index], showNickname: false,);
+                        }
+                        return Container();
                       }
                   );
                 }
