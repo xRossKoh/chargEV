@@ -19,7 +19,6 @@ class ChargerSelection extends StatefulWidget {
 class _ChargerSelectionState extends State<ChargerSelection> {
   @override
   Widget build(BuildContext context) {
-
     // fetch dimensions of phone
     Size size = MediaQuery.of(context).size;
 
@@ -31,29 +30,44 @@ class _ChargerSelectionState extends State<ChargerSelection> {
       body: SafeArea(
         child: Column(
           children: [
-            LocationAppBar(location: '5A Dunbar Walk', withCurrentLocation: true,),
-            SizedBox(height: size.height * 0.03,),
+            LocationAppBar(
+              location: '5A Dunbar Walk',
+              withCurrentLocation: true,
+            ),
+            SizedBox(
+              height: size.height * 0.03,
+            ),
             Flexible(
-              child: StreamBuilder<List<Charger>>(
-                stream: _databaseService.allChargersList,
+                child: StreamBuilder<List<Charger>>(
+                    stream: _databaseService.allChargersList,
                     builder: (context, snapshot) {
                       List<Charger> chargers =
                           snapshot.hasData ? snapshot.data : [];
 
                       // print(snapshot.error);
 
-                  return ListView.builder(
-                      itemCount: chargers.length,
-                      itemBuilder: (context, index){
-                        if (!chargers[index].accepted){
-                          return ChargerCard(charger: chargers[index], showNickname: false,);
-                        }
-                        return Container();
-                      }
-                  );
-                }
-              )
-            ),
+                      List<Charger> availableChargers = chargers
+                          .where((element) => !element.accepted)
+                          .toList();
+
+                      return availableChargers.length == 0
+                          ? Container(
+                            padding: EdgeInsets.fromLTRB(0, size.height*0.10, 0, 0),
+                            constraints: BoxConstraints(maxWidth: size.width*0.8),
+                              child: Text(
+                                "There are no chargers available for booking.",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w300),
+                              ),
+                            )
+                          : ListView.builder(
+                              itemCount: availableChargers.length,
+                              itemBuilder: (context, index) {
+                                return ChargerCard(
+                                    charger: availableChargers[index],
+                                    showNickname: false);
+                              });
+                    })),
           ],
         ),
       ),
