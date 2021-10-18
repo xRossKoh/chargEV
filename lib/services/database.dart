@@ -54,7 +54,7 @@ class DatabaseService {
 
   /// Adds display name of new user to database
   Future addUserInfo(UserInfo userInfo) async {
-    return await userCollection.doc(uid).set({
+    return await userCollection.doc(userInfo.uid).set({
       'displayName': userInfo.displayName,
     }, SetOptions(merge: true));
   }

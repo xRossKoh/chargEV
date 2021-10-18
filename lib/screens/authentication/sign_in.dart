@@ -96,7 +96,7 @@ class _SignInState extends State<SignIn> {
                         : () async {
                             setState(() => isLoading = true);
                             dynamic result = await _auth.signInAnon();
-                            print(result);
+                            //print(result);
                           },
                     child: isLoading
                         ? CircularProgressIndicator()

@@ -13,7 +13,11 @@ class AuthService {
   //sign in anon
   Future signInAnon() async {
     UserCredential res = await _auth.signInAnonymously();
-    print('done');
+
+    model.UserInfo user =
+        model.UserInfo(uid: res.user.uid, displayName: "Anon #${DateTime.now().microsecond}");
+
+    await DatabaseService().addUserInfo(user);
     return res.user;
   }
 
