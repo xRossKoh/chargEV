@@ -39,10 +39,10 @@ class ChargeCategoryCard extends StatelessWidget {
                     style:
                     TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
-                child: Text(' (${count.toString()}) '),
-              )
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(10, 0, 0, 10),
+              //   child: Text(' (${count.toString()}) '),
+              // )
             ],
           )),
     );
