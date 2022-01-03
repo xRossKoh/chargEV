@@ -200,7 +200,7 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                         validator: FieldValidators.stringValidator,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
-                          WhitelistingTextInputFormatter.digitsOnly
+                          FilteringTextInputFormatter.digitsOnly
                         ],
                         // onChanged: (String val){
                         //   setState(() => newCharger.setWattage(int.parse(val)));
@@ -215,7 +215,7 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                         validator: FieldValidators.stringValidator,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
-                          WhitelistingTextInputFormatter.digitsOnly
+                          FilteringTextInputFormatter.digitsOnly
                         ],
                         // onChanged: (String val){
                         //   setState(() => newCharger.setType(int.parse(val)));
@@ -274,7 +274,7 @@ class _ChargerSetUpState extends State<ChargerSetUp> {
                         validator: FieldValidators.durationValidator,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
-                          WhitelistingTextInputFormatter.digitsOnly
+                          FilteringTextInputFormatter.digitsOnly
                         ],
                         // onChanged: (String val){
                         //   setState(() => newCharger.setDuration(int.parse(val)));
